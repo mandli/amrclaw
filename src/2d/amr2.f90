@@ -582,7 +582,7 @@ program amr2
       write(*,format_string) level, &
              real(tvoll(level),kind=8) / real(clock_rate,kind=8)
     end do
-    format_string = "('Total regridding time ',1f16.8,' s')"
+    format_string = "('Total regridding time          ',1f16.8,' s')"
     write(outunit,format_string) level, &
              real(timeRegridding,kind=8) / real(clock_rate,kind=8)
 
