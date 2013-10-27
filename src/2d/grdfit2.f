@@ -1,7 +1,8 @@
 c
 c ---------------------------------------------------------
 c
-      subroutine grdfit (lbase,lcheck,nvar,naux,cut,time,start_time)
+      subroutine grdfit (lbase,lcheck,nvar,naux,cut,time,
+     1                   start_time)
 c
       use amr_module
       implicit double precision (a-h,o-z)
