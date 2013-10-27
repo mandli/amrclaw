@@ -54,6 +54,7 @@ c
 c after kcheck integrations of parent grid, move its refinements.
 c finest level grid never needs to have its finer subgrids moved.
 c
+      timeRegridding = 0.
       do 60 i   = 1, maxlv
          tvoll(i) = 0.d0
          iregridcount(i) = 0

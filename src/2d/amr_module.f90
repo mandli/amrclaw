@@ -77,7 +77,6 @@ module amr_module
             numgrids(maxlv),numcells(maxlv), &
             iorder,mxnest,kcheck
 
-    integer ngrids
 
     ! ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     ! ::::  for alloc array/memory
@@ -109,7 +108,8 @@ module amr_module
     ! :::::  collect stats
     ! ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     real(kind=8)  rvoll(maxlv),evol,rvol,avenumgrids(maxlv)
-    integer iregridcount(maxlv), tvoll(maxlv)
+    integer iregridcount(maxlv), tvoll(maxlv),timeRegridding
+
     integer lentot,lenmax,lendim
 
     ! ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
