@@ -71,8 +71,10 @@ c        ### put flags into locamrflag array.
 
 c     still need to reclaim error est space from spest.f 
 c     which was saved for possible errest reuse
-         locbig = node(tempptr,mptr)
-         call reclam(locbig,mitot*mjtot*nvar)
+         if (flag_richardson) then
+            locbig = node(tempptr,mptr)
+            call reclam(locbig,mitot*mjtot*nvar)
+         endif
 c     
          if (eprint .and. maxthreads .eq. 1) then ! otherwise race for printing
             write(outunit,*)" flagged points before projec2", 
