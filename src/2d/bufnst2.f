@@ -36,13 +36,14 @@ c
 
 c      mptr = lstart(lcheck)
 c41   continue
-!$OMP PARALLEL DO PRIVATE(jg,mptr,ilo,ihi,jlo,jhi,nx,ny,mitot,mjtot),
+!$OMP PARALLEL DO REDUCTION(+:numbad)
+!$OMP&            PRIVATE(jg,mptr,ilo,ihi,jlo,jhi,nx,ny,mitot,mjtot),
 !$OMP&            PRIVATE(mibuff,mjbuff,locamrflags,mbuff,ibytesPerDP),
 !$OMP&            PRIVATE(loctmp,locbig,j,i,numpro2,numflagged),
 !$OMP&            PRIVATE(locdomflags,locdom2),
 !$OMP&            SHARED(numgrids, listgrids,nghost,flag_richardson),
 !$OMP&            SHARED(nvar,eprint,maxthreads,node,rnode,lbase,ibuff),
-!$OMP&            SHARED(alloc,lcheck,numpro,mxnest,numbad,dx,dy,time),
+!$OMP&            SHARED(alloc,lcheck,numpro,mxnest,dx,dy,time),
 !$OMP&            DEFAULT(none),      
 !$OMP&            SCHEDULE (DYNAMIC,1)
       do  jg = 1, numgrids(lcheck)
@@ -150,9 +151,9 @@ c
 c     write(outunit,116) numflagged, mptr
  116     format(i5,' points flagged on level ',i4,' grid ',i4)
          node(numflags,mptr) = numflagged
-!$OMP CRITICAL(nb)
+! $ OMP CRITICAL(nb)
          numbad = numbad + numflagged   
-!$OMP END CRITICAL(nb)
+! $ OMP END CRITICAL(nb)
 
 c ADD WORK THAT USED TO BE IN FLGLVL2 FOR MORE PARALLEL WORK WITHOUT JOINING AND SPAWNING AGAIN
 c in effect this is domgrid, but since variables already defined just need half of it, inserted here
@@ -168,6 +169,7 @@ c     bad names, for historical reasons. they are both smae size now
 
 
       end do
+!$OMP END PARALLEL DO
 c     mptr = node(levelptr,mptr)
 c     if (mptr .ne. 0) go to 41
 

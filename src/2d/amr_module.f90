@@ -50,9 +50,9 @@ module amr_module
     integer, parameter :: iinfinity = 999999999
     integer, parameter :: horizontal = 1
     integer, parameter :: vertical = 2
-    integer, parameter :: maxgr = 5000
+    integer, parameter :: maxgr = 15000
     integer, parameter :: maxlv = 10
-    integer, parameter :: maxcl = 500
+    integer, parameter :: maxcl = 5000
 
     ! The max1d parameter should be changed if using OpenMP grid based 
     ! looping, usually set to max1d = 60
@@ -108,7 +108,10 @@ module amr_module
     ! :::::  collect stats
     ! ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     real(kind=8)  rvoll(maxlv),evol,rvol,avenumgrids(maxlv)
-    integer iregridcount(maxlv), tvoll(maxlv),timeRegridding
+    integer iregridcount(maxlv), tvoll(maxlv)
+    integer timeRegridding, timeUpdating, timeValout
+    integer timeGrdfit1,timeGrdfit2,timeGrdfit3,timeGrdfitAll
+    integer timeSetaux,timeFilval
 
     integer lentot,lenmax,lendim
 

@@ -6,7 +6,7 @@ c
       use amr_module
       implicit double precision (a-h,o-z)
       integer newnumgrids(maxlv)
-
+      integer clock_start2, clock_finish, clock_rate
 c
 c :::::::::::::::::::::::::::: REGRID :::::::::::::::::::::::::::::::
 
@@ -68,7 +68,10 @@ c
 c  2. interpolate storage for the new grids.  the starting pointers
 c  for each level are in newstl. also reclaim some space before new
 c  allocations.
+      call system_clock(clock_start2,clock_rate)
       call gfixup(lbase,lfnew,nvar,naux,newnumgrids,maxnumnewgrids)
+      call system_clock(clock_finish,clock_rate)
+      timeGrdfit2 = timeGrdfit2 + clock_finish - clock_start2
 c
 c  3. merge data structures (newstl and lstart )
 c  finish storage allocation, reclaim space, etc. set up boundary
