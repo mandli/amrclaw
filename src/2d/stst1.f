@@ -55,7 +55,7 @@ c after kcheck integrations of parent grid, move its refinements.
 c finest level grid never needs to have its finer subgrids moved.
 c
       timeGrdfitAll = 0.
-      timeGrdfit1   = 0.
+      timeFlglvl   = 0.
       timeGrdfit2   = 0.
       timeSetaux    = 0.
       timeFilval    = 0.

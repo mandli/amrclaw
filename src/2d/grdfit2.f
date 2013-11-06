@@ -38,7 +38,7 @@ c     ## (storage based on nptmax calculation however).
       call system_clock(clock_start1,clock_rate)
       call flglvl2(nvar,naux,lcheck,nptmax,index,lbase,npts,start_time)
       call system_clock(clock_finish,clock_rate)
-      timeGrdfit1 = timeGrdfit1 + clock_finish - clock_start1
+      timeFlglvl = timeFlglvl + clock_finish - clock_start1
 
       if (npts .eq. 0) go to 99
 c

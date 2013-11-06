@@ -46,17 +46,17 @@ c :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 c         # does it intersect?
 c  INCLUDING GHOST CELLS?? AT LEAST FOR COPYING AUX, IF NOT Q
-          ixlo = max(iglo-nghost,ilo-nghost)
-          ixhi = min(ighi+nghost,ihi+nghost)
-          jxlo = max(jglo-nghost,jlo-nghost)
-          jxhi = min(jghi+nghost,jhi+nghost)
+!--          ixlo = max(iglo-nghost,ilo-nghost)
+!--          ixhi = min(ighi+nghost,ihi+nghost)
+!--          jxlo = max(jglo-nghost,jlo-nghost)
+!--          jxhi = min(jghi+nghost,jhi+nghost)
 c  how did ghost cells get in the allowable region? They are not filled
 c  (since we may be interpolating from newly filled grids, not just grids
 c  that have been primed with bcs to be advanced.
-!--          ixlo = max(iglo,ilo)
-!--          ixhi = min(ighi,ihi)
-!--          jxlo = max(jglo,jlo)
-!--          jxhi = min(jghi,jhi)
+          ixlo = max(iglo,ilo)
+          ixhi = min(ighi,ihi)
+          jxlo = max(jglo,jlo)
+          jxhi = min(jghi,jhi)
 
 
           if (ixlo .le. ixhi .and. jxlo .le. jxhi) then
@@ -72,19 +72,16 @@ c  that have been primed with bcs to be advanced.
                   ialloc  =  iadd(ivar,i-iglo+nghost+1,j-jglo+nghost+1)
                   val(ivar,i-ilo+iputst,j-jlo+jputst)  =  alloc(ialloc)
  20           continue
-!--              if (i-ilo+iputst .lt. 0 .or. i-ilo+iputst .gt.nrow .or.
-!--     .           j-jlo+jputst .lt. 0 .or. j-jlo+jputst .gt.ncol) then
-!--                    write(*,*)" overwriting memory ehrre"
-!--              endif
               auxflags(i-ilo+iputst,j-jlo+jputst) = 1   ! set flag
               do 25 iaux = 1, naux
                   ialloc = iaddaux(iaux,i-iglo+nghost+1,j-jglo+nghost+1)
-!--                  temp = alloc(ialloc)
-!--                  if  ((aux(iaux,i-ilo+iputst,j-jlo+jputst) .ne. temp) 
-!--     .               .and. iaux .le. 4)
-!--     .                   write(*,*)" stop here"
+c                  temp = alloc(ialloc)
+c                  if  ((aux(iaux,i-ilo+iputst,j-jlo+jputst) .ne. temp) 
+c     .               .and. iaux .le. 4)
+c     .                   write(*,*)" grid ",mptr," differs at i,j", i,j
                   aux(iaux,i-ilo+iputst,j-jlo+jputst)  =  alloc(ialloc)
  25           continue
+
  30           continue
           endif
           mptr = node(levelptr, mptr)

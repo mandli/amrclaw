@@ -110,7 +110,7 @@ module amr_module
     real(kind=8)  rvoll(maxlv),evol,rvol,avenumgrids(maxlv)
     integer iregridcount(maxlv), tvoll(maxlv)
     integer timeRegridding, timeUpdating, timeValout
-    integer timeGrdfit1,timeGrdfit2,timeGrdfit3,timeGrdfitAll
+    integer timeFlglvl,timeGrdfit2,timeGrdfit3,timeGrdfitAll
     integer timeSetaux,timeFilval
 
     integer lentot,lenmax,lendim
