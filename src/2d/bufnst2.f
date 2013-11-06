@@ -173,7 +173,7 @@ c     bad names, for historical reasons. they are both smae size now
 c     mptr = node(levelptr,mptr)
 c     if (mptr .ne. 0) go to 41
 
-      if (verbosity_regrid .gt. 0) then
+      if (verbosity_regrid .ge. lcheck) then
         write(outunit,*)" total flagged points counted on level ",
      .                  lcheck," is ",numbad
         write(outunit,*)"this may include double counting buffer cells",
