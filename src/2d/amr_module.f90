@@ -56,7 +56,11 @@ module amr_module
 
     ! The max1d parameter should be changed if using OpenMP grid based 
     ! looping, usually set to max1d = 60
+#ifdef MAX1DGRID
+    integer, parameter :: max1d = MAX1DGRID 
+#else
     integer, parameter :: max1d = 60 
+#endif
     !integer, parameter :: max1d = 500 
 
     integer, parameter :: maxvar = 10
