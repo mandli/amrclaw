@@ -123,7 +123,9 @@ module amr_module
     ! :::::  method parameters
     ! ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     character(len=10), allocatable :: auxtype(:)
-    integer  method(7), mwaves, mcapa
+    integer  method(7), mwaves
+    !DIR$ ATTRIBUTES OFFLOAD:mic :: mcapa
+    integer :: mcapa
     integer, allocatable :: mthlim(:)
     real(kind=8) cfl,cflmax,cflv1,cfl_level
 
