@@ -50,7 +50,8 @@ module amr_module
     integer, parameter :: iinfinity = 999999999
     integer, parameter :: horizontal = 1
     integer, parameter :: vertical = 2
-    integer, parameter :: maxgr = 15000
+!     integer, parameter :: maxgr = 15000
+    integer, parameter :: maxgr = 30000
     integer, parameter :: maxlv = 10
     integer, parameter :: maxcl = 5000
 
@@ -123,9 +124,8 @@ module amr_module
     ! :::::  method parameters
     ! ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     character(len=10), allocatable :: auxtype(:)
-    integer  method(7), mwaves
-    !DIR$ ATTRIBUTES OFFLOAD:mic :: mcapa
-    integer :: mcapa
+   
+    integer :: method(7), mwaves, mcapa
     integer, allocatable :: mthlim(:)
     real(kind=8) cfl,cflmax,cflv1,cfl_level
 
