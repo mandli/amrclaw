@@ -417,7 +417,7 @@ program amr2
     write(parmunit,*) ' '
     write(parmunit,*) 'Running amrclaw with parameter values:'
     write(parmunit,*) ' '
-
+    write(parmunit,*) ' max1d = ', max1d
 
     print *, ' '
     print *, 'Running amrclaw ...  '
