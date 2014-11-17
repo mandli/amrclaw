@@ -84,6 +84,39 @@ def setplot(plotdata):
     plotitem.amr_celledges_show = [1,1,0]
     plotitem.amr_patchedges_show = [1]
 
+    # Figure for refinement criteria
+    plotfigure = plotdata.new_plotfigure(name="refinement", figno=3)
+
+    def refinement_criteria(cd, field=0, level=1):
+        import numpy
+        return numpy.ma.masked_where(cd.level != level, cd.aux[field, :, :], 
+                                     copy=False)
+
+    # Axes
+    num_levels = 3
+    criteria_funcs = [lambda cd: refinement_criteria(cd, level=1),
+                      lambda cd: refinement_criteria(cd, level=2),
+                      lambda cd: refinement_criteria(cd, level=3),]
+    for level in xrange(num_levels):
+        plotaxes = plotfigure.new_plotaxes()
+        plotaxes.axescmd = 'subplot(1, %s, %s)' % (num_levels, level + 1)
+        plotaxes.xlimits = [0,1]
+        plotaxes.ylimits = [0,1]
+        plotaxes.title = 'Refinement Criteria, level = %s' % (level + 1)
+        plotaxes.scaled = True
+
+
+        # Plot field
+        plotitem = plotaxes.new_plotitem(plot_type='2d_pcolor')
+        plotitem.plot_var = criteria_funcs[level]
+        plotitem.pcolor_cmap = colormaps.yellow_red_blue
+        plotitem.pcolor_cmin = 0.0
+        plotitem.pcolor_cmax = 1.0
+        plotitem.add_colorbar = True
+        plotitem.amr_celledges_show = [0, 0, 0]
+        plotitem.amr_patchedges_show = [0, 0, 0]
+        plotitem.amr_patchedges_show[level] = 1
+
     #-----------------------------------------
     # Figures for gauges
     #-----------------------------------------

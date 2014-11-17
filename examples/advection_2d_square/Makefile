@@ -45,7 +45,7 @@ SOURCES = \
   $(CLAW)/riemann/src/rpn2_advection.f \
   $(CLAW)/riemann/src/rpt2_advection.f \
   $(AMRLIB)/amr2.f90 \
-  $(AMRLIB)/setaux.f90 \
+  ./setaux.f90 \
   $(AMRLIB)/bc2amr.f \
   $(AMRLIB)/b4step2.f90 \
   $(AMRLIB)/qad.f \
@@ -65,7 +65,7 @@ SOURCES = \
   $(AMRLIB)/colate2.f \
   $(AMRLIB)/bufnst2.f \
   $(AMRLIB)/spest2.f \
-  $(AMRLIB)/flag2refine2.f90 \
+  ./flag2refine2.f90 \
   $(AMRLIB)/flagregions2.f90 \
   $(AMRLIB)/errest.f \
   $(AMRLIB)/errf1.f \
