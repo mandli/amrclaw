@@ -124,8 +124,61 @@ class AmrclawInputData(clawpack.clawutil.data.ClawData):
         self.close_data_file()
 
 
+# ====================================
+#  Refinement Region Class Definition
+# ====================================
+class RefinementRegion(object):
+    r"""Basic refinement region definition used to specify refinement regions
+
+    The basic component of a region are the definition of the location of the
+    region stored in *region*, the temporal validity *time*, and the definition
+    of the *criteria*.  In the basic implementation *criteria* is a tuple
+    defining the field
+    """
+
+    def __init__(self, region, criteria, time=None):
+        r""""""
+
+        # TODO: Handle 3D regions
+        self.region = None
+        """Region coordinates - ((lower left), (upper right))"""
+
+        self.time = None
+        """Temporal validty of region"""
+
+        self.criteria = ('q', 1, 0.25)
+        """Criteria that will be checked - tuple"""
+
+    def is_valid(self):
+        """Check to make sure all needed components are set."""
+
+        return self.region is not None and self.time is not None
+
+    def write(self, file_handle):
+        """Write the description of this region to *file_handle*
+
+        Assumes that we are on the line that we need to write on and that the
+        caller will handle all new-lines.
+
+        :Input:
+         - *file_handle* (file) File instance that will be written to.
+        """
+        file_handle.write("%s %s %s %s %s %s %s" % (self.region[0][0],
+                                                    self.region[0][1],
+                                                    self.region[1][0],
+                                                    self.region[1][1],
+                                                    self.time[0],
+                                                    self.time[1],
+                                                    self.criteria[0],
+                                                    self.criteria[1]))
+
+    def __str__(self):
+        pass
+
+
 # ==============================================================================
 #  Region data object
+#  This object is responsible for the definition of all critera
 class RegionData(clawpack.clawutil.data.ClawData):
     r""""""
 
