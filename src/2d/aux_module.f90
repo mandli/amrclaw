@@ -16,7 +16,12 @@
 module aux_module
 
     implicit none
+    save
 
+    logical, private :: module_setup = .false.
+
+    ! Change this for easy conversion to other dimensions - note that you also
+    ! will need to change the shape of data
     integer, parameter :: NUM_DIM = 2
 
     ! Container for aux file information
@@ -25,6 +30,7 @@ module aux_module
         character(len=150) :: path
         integer :: file_type, init_type
         real(kind=8) :: no_data_value
+        real(kind=8) :: fill_value
 
         ! Location of data
         real(kind=8) :: lower(NUM_DIM), upper(NUM_DIM), dx(NUM_DIM)
@@ -35,8 +41,8 @@ module aux_module
         ! Control of use of data
         integer :: min_level, max_level
 
-        ! data
-        real(kind=8), allocatable :: data(NUM_DIM)
+        ! data - Note that this needs to be directly dimensioned unfortunately
+        real(kind=8), allocatable :: data(:, :)
 
     end type aux_file_type
 
@@ -45,6 +51,9 @@ module aux_module
     ! Aux Files
     integer :: num_aux_files
     type(aux_file_type), allocatable :: aux_files(:)
+
+    ! Logging
+    integer, parameter :: AUX_FILE_UNIT = 52
 
 contains
 
@@ -67,8 +76,6 @@ contains
     ! ========================================================================
     subroutine set_aux_files(fname)
 
-        use geoclaw_module
-
         implicit none
 
         ! Input arguments
@@ -76,63 +83,64 @@ contains
 
         ! Local storage
         integer, parameter :: unit = 7
+        integer :: i
 
+        if (.not.module_setup) then
 
+            ! Open and begin parameter file output
+            open(unit=AUX_FILE_UNIT, file='fort.aux', status='unknown',       &
+                 action='write')
+            write(AUX_FILE_UNIT,*) ' '
+            write(AUX_FILE_UNIT,*) '-------------------------------------------'
+            write(AUX_FILE_UNIT,*) 'SET_AUX_FILES:'
+            write(AUX_FILE_UNIT,*) '---------'
 
-      ! Locals
-      ! integer, parameter :: iunit = 7
-      ! integer :: i,j,iauxinitfile
-      ! character*25 :: file_name
-      ! logical :: found_file
+            ! Open data file
+            if (present(fname)) then
+                call opendatafile(unit, fname)
+            else
+                call opendatafile(unit, 'aux_file.data')
+            endif
 
+            read(unit, *) num_aux_files
 
-        ! Open and begin parameter file output
-        write(GEO_PARM_UNIT,*) ' '
-        write(GEO_PARM_UNIT,*) '--------------------------------------------'
-        write(GEO_PARM_UNIT,*) 'SET_AUX_FILES:'
-        write(GEO_PARM_UNIT,*) '---------'
+            if (num_aux_files == 0) then
+                write(AUX_FILE_UNIT,*) '   num_aux_files = 0'
+                return
+            endif
 
-        ! Open data file
-        if (present(fname)) then
-            call opendatafile(unit, fname)
-        else
-            call opendatafile(unit, 'aux_files.data')
-        endif
+            write(AUX_FILE_UNIT,*) '   num_aux_files = ', num_aux_files
 
-        read(unit, *) num_aux_files
+            ! Read and allocate data parameters for each file
+            allocate(aux_files(num_aux_files))
 
-        if (num_aux_files == 0) then
-            write(GEO_PARM_UNIT,*) '   num_aux_files = 0'
-            return
-        endif
+            do i = 1, num_aux_files
+                read(unit, *) aux_files(i)%path
+                read(unit, *) aux_files(i)%file_type, aux_files(i)%init_type
+                read(unit, *) aux_files(i)%min_level, aux_files(i)%max_level
 
-        write(GEO_PARM_UNIT,*) '   num_aux_files = ', num_aux_files
+                write(AUX_FILE_UNIT,*) '   '
+                write(AUX_FILE_UNIT,*) '   ', aux_files(i)%path
+                write(AUX_FILE_UNIT,*) '  file_type = ', aux_files(i)%file_type
+                write(AUX_FILE_UNIT,*) '  init_type = ', aux_files(i)%init_type
+                write(AUX_FILE_UNIT,*) '  minlevel, maxlevel = ', &
+                                      aux_files(i)%min_level, aux_files(i)%max_level
 
-        ! Read and allocate data parameters for each file
-        allocate(aux_files(num_aux_files))
+                ! Read in the size of the data here
+                call read_aux_file_header(aux_files(i))
 
-        do i = 1, num_aux_files
-            read(unit, *) aux_files(i)%path
-            read(unit, *) aux_files(i)%file_type, aux_files(i)%init_type
-            read(unit, *) aux_files(i)%min_level, aux_files(i)%max_level
+                allocate(aux_files(i)%data(aux_files(i)%num_cells(1), &
+                                           aux_files(i)%num_cells(2)))
 
-            write(GEO_PARM_UNIT,*) '   '
-            write(GEO_PARM_UNIT,*) '   ', aux_files(i)%path
-            write(GEO_PARM_UNIT,*) '  file_type = ', aux_files(i)%file_type
-            write(GEO_PARM_UNIT,*) '  init_type = ', aux_files(i)%init_type
-            write(GEO_PARM_UNIT,*) '  minlevel, maxlevel = ', &
-                                  aux_files(i)%min_level, aux_files(i)%max_level
+                ! Read in the data itself
+                call read_aux_file_data(aux_files(i))
+            end do
 
-            ! Read in the size of the data here
-            call read_aux_file_header(aux_files(i))
+            close(AUX_FILE_UNIT)
 
-            allocate(aux_files(i)%data(aux_files(i)%num_cells(1), &
-                                       aux_files(i)%num_cells(2))
-
-            ! Read in the data itself
-            call read_aux_file_data(aux_files(i))
-        end do
-    end subroutine set_auxinit
+            module_setup = .true.
+        end if
+    end subroutine set_aux_files
 
     ! ========================================================================
     !  Read aux file header
@@ -152,7 +160,7 @@ contains
         ! Locals
         integer, parameter :: unit = 8
         integer :: mx, my, total_size, status, n
-        real(kind=8) :: xll, yll, xhi, yhi, x, y, z
+        real(kind=8) :: xll, yll, xhi, yhi, x, y, z, dx, dy
         logical :: found_file
         character(len=80) :: str
         real(kind=8) :: values(10)
@@ -212,10 +220,10 @@ contains
                 dy = (yhi - yll) / (my - 1)
 
                 ! Update the aux_file object
-                aux_file%num_cells = (mx, my)
-                aux_file%lower = (xll, yll)
-                aux_file%upper = (xhi, yhi)
-                aux_file%dx = (dx, dy)
+                aux_file%num_cells = [mx, my]
+                aux_file%lower = [xll, yll]
+                aux_file%upper = [xhi, yhi]
+                aux_file%dx = [dx, dy]
 
                 close(unit)
 
@@ -249,7 +257,7 @@ contains
                     aux_file%dx(2) = aux_file%dx(1)
                 endif
 
-                read(iunit,'(a)') str
+                read(unit,'(a)') str
                 call parse_values(str, n, values)
                 aux_file%no_data_value = values(1)
 
@@ -340,9 +348,9 @@ contains
                 stop
         end select
 
-        write(GEO_PARM_UNIT, *) '  mx = ',aux_file%num_cells(1),'  x = (',aux_file%lower(1),',',aux_file%upper(1),')'
-        write(GEO_PARM_UNIT, *) '  my = ',aux_file%num_cells(2),'  y = (',aux_file%lower(2),',',aux_file%upper(2),')'
-        write(GEO_PARM_UNIT, *) '  dx, dy (meters/degrees) = ', aux_file%dx
+        write(AUX_FILE_UNIT, *) '  mx = ',aux_file%num_cells(1),'  x = (',aux_file%lower(1),',',aux_file%upper(1),')'
+        write(AUX_FILE_UNIT, *) '  my = ',aux_file%num_cells(2),'  y = (',aux_file%lower(2),',',aux_file%upper(2),')'
+        write(AUX_FILE_UNIT, *) '  dx, dy (meters/degrees) = ', aux_file%dx
 
     end subroutine read_aux_file_header
 
@@ -373,28 +381,30 @@ contains
 
         ! Locals
         integer, parameter :: unit = 8, missing_unit = 17
-        integer :: i, j, status
+        integer :: i, j, status, missing
+        real(kind=8) :: x, y
 
         print *, ' '
         print *, 'Reading aux file  ', aux_file%path
 
-        select case(abs(filetype))
+        select case(abs(aux_file%file_type))
             ! ASCII file with x,y,z values on each line.
             ! (progressing from upper left corner across rows, then down)
             ! Assumes a uniform rectangular grid of data values.
             case(1)
-                allocate(buffer(aux_file%num_cells(1) * aux_file%num_cells(2)))
-
                 open(unit=unit, file=aux_file%path, status='unknown', &
                      form='formatted')
-                i = 0
-                status = 0
-                do while (status == 0)
-                    i = i + 1
-                    read(unit, fmt=*, iostat=status) x, y, buffer(i)
-                enddo
-
-                aux_file%data = reshape(buffer, aux_file%num_cells)
+                
+                do j = aux_file%num_cells(2), 1, -1
+                    do i = 1, aux_file%num_cells(1)
+                        read(unit, fmt=*, iostat=status) x, y, aux_file%data(i, j)
+                        if (status /= 0) then
+                            print *, "Unable to read aux file ", aux_file%path
+                            print *, " reached status = ", status
+                            stop
+                        end if
+                    end do
+                end do
 
                 close(unit)
 
@@ -410,40 +420,49 @@ contains
 
                 ! Read header
                 do i = 1, 6
-                    read(iunit,*)
+                    read(unit,*)
                 enddo
 
                 ! Read in data
                 missing = 0
                 select case(abs(aux_file%file_type))
                     case(2)
-                        do i=1, mx * my
-                            read(iunit,*) buffer(i)
-                            if (buffer(i) == aux_file%no_data_value) then
-                                missing = missing + 1
-                                buffer(i) = aux_file%missing_value
-                            endif
-                        enddo
+                        do j = aux_file%num_cells(2), 1, -1
+                            do i = 1, aux_file%num_cells(1)
+                                read(unit,*) aux_file%data(i, j)
+                                ! if (buffer(i) == aux_file%no_data_value) then
+                                !     missing = missing + 1
+                                !     buffer(i) = aux_file%missing_value
+                                ! endif
+                            end do
+                        end do
                     case(3)
-                        do j=1,my
-                            read(unit, *) (aux_file%data(i, j), i = 1, mx)
-                            do i=1,mx
-                                if (aux_file%data(i, j) == no_data_value) then
-                                    missing = missing + 1
-                                    aux_file%data(i, j) = aux_file%missing_value
-                                endif
-                            enddo
+                        do j = aux_file%num_cells(1), 1, -1
+                            read(unit, *) (aux_file%data(i, j), &
+                                           i = 1, aux_file%num_cells(1))
+                            ! do i=1,mx
+                            !     if (aux_file%data(i, j) == no_data_value) then
+                            !         missing = missing + 1
+                            !         aux_file%data(i, j) = aux_file%missing_value
+                            !     endif
+                            ! enddo
                         enddo
                 end select
 
-                ! Write a warning if we found and missing values
-                if (missing > 0)  then
+                ! Check for missing data
+                missing = count(aux_file%data == aux_file%no_data_value)
+                if (missing > 0) then
+                    where (aux_file%data == aux_file%no_data_value) 
+                        aux_file%data = aux_file%fill_value
+                    end where
+
+                    ! Write a warning if we found and missing values
                     print *, '   WARNING...some missing data values this file'
                     print *, '       ',missing,' missing data values'
                     print *, '              (see fort.missing)'
                     print *, '   These values have arbitrarily been set to ',&
-                        auxinit_missing
-                endif
+                             aux_file%fill_value
+                end if
 
                 close(unit)
 
@@ -457,9 +476,9 @@ contains
 #endif
         end select
 
-        close(unit=iunit)
+        close(unit=unit)
 
-   end subroutine read_auxinit
+   end subroutine read_aux_file_data
 
 #ifdef NETCDF
     ! Check error return from NetCDF routine

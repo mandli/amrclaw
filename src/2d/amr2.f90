@@ -93,6 +93,7 @@ program amr2
 
     use regions_module, only: set_regions
     use gauges_module, only: set_gauges, num_gauges
+    use aux_module, only: set_aux_files
 
     implicit none
 
@@ -460,6 +461,7 @@ program amr2
         ! Non-user data files
         call set_regions()
         call set_gauges(rest, nvar, naux)
+        call set_aux_files()
 
     else
 
@@ -473,6 +475,7 @@ program amr2
         ! Non-user data files
         call set_regions()
         call set_gauges(rest, nvar, naux)
+        call set_aux_files()
 
         cflmax = 0.d0   ! otherwise use previously heckpointed val
 

@@ -3,11 +3,13 @@
 """Base AMRClaw data class for writing out data parameter files."""
 
 from __future__ import absolute_import
-import os
 
-import clawpack.clawutil.data
+import os
 import six
 from six.moves import range
+
+import clawpack.clawutil.data
+
 
 class AmrclawInputData(clawpack.clawutil.data.ClawData):
     r"""
@@ -22,7 +24,7 @@ class AmrclawInputData(clawpack.clawutil.data.ClawData):
 
         # Need to have a pointer to this so we can get num_dim and num_aux
         self._clawdata = clawdata
-        
+
         # Refinement control
         self.add_attribute('amr_levels_max',1)
         self.add_attribute('refinement_ratios_x',[1])
@@ -46,7 +48,6 @@ class AmrclawInputData(clawpack.clawutil.data.ClawData):
         self.add_attribute('clustering_cutoff',0.7)
         self.add_attribute('verbosity_regrid',3)
 
-        
         # debugging flags:
         self.add_attribute('dprint',False)
         self.add_attribute('eprint',False)
@@ -63,7 +64,7 @@ class AmrclawInputData(clawpack.clawutil.data.ClawData):
     def write(self, out_file='amr.data', data_source='setrun.py'):
 
         self.open_data_file(out_file, data_source)
-    
+
         self.data_write('amr_levels_max')
 
         num_ratios = max(abs(self.amr_levels_max)-1, 1)
@@ -93,7 +94,7 @@ class AmrclawInputData(clawpack.clawutil.data.ClawData):
         self.data_write('flag_richardson')
         if self.flag_richardson == False:
             # Still need to add flag_richardson to fortran, for now this works:
-            self.flag_richardson_tol = -1.   
+            self.flag_richardson_tol = -1.0
         self.data_write('flag_richardson_tol')
         self.data_write('flag2refine')
         self.data_write('flag2refine_tol')
@@ -125,18 +126,18 @@ class AmrclawInputData(clawpack.clawutil.data.ClawData):
 class RegionData(clawpack.clawutil.data.ClawData):
     r""""""
 
-    def __init__(self,regions=None,num_dim=None):
+    def __init__(self, regions=None, num_dim=None):
 
-        super(RegionData,self).__init__()
+        super(RegionData, self).__init__()
 
-        if regions is None or not isinstance(regions,list):
+        if regions is None or not isinstance(regions, list):
             self.add_attribute('regions',[])
         else:
             self.add_attribute('regions',regions)
         self.add_attribute('num_dim',num_dim)
 
 
-    def write(self,out_file='regions.data',data_source='setrun.py'):
+    def write(self, out_file='regions.data', data_source='setrun.py'):
 
 
         self.open_data_file(out_file,data_source)
@@ -376,7 +377,88 @@ class GaugeData(clawpack.clawutil.data.ClawData):
 #  Gauge data objects
 # ==============================================================================
 
+# ==============================================================================
+#  Aux File Data
+class AuxFile(object):
+    r""""""
 
-if __name__ == '__main__':
-    raise Exception("Not unit tests have been defined for this module.")
+    def __init__(self, path):
+        r""""""
+        self.path = None
+        self.file_type = None
+        self.init_type = None
+        self.min_level = 1
+        self.max_level = None
+        self.fill_value = 0.0
 
+
+    def __str__(self):
+        output = self.path
+        output = "\n".join((output, "%s %s" % (self.file_type,
+                                               self.init_type)))
+        output = "\n".join((output, "%s %s" % (self.min_level,
+                                               self.max_level)))
+        output = "\n".join((output, "%s\nb" % (self.filL_value)))
+        return output
+
+
+    def read(self, file_handle):
+        r""""""
+        raise NotImplementedError("Reading capabilties not yet implemented.")
+
+
+class AuxFileData(clawpack.clawutil.data.ClawData):
+    r""""""
+
+    def __init__(self, path=None):
+
+        super(AuxFileData, self).__init__()
+        self.add_attribute('aux_files', [])
+
+        if path is not None:
+            self.read(path)
+
+
+    def write(self, out_file='aux_file.data', data_source='setrun.py'):
+        r"""Write out aux file data description to file"""
+
+        self.open_data_file(out_file, data_source)
+
+        self.data_write(value=len(self.aux_files), alt_name='num_aux_files')
+        for aux_file in self.aux_files:
+            self._out_file.write(aux_file)
+        self.close_data_file()
+
+
+    def read(self, path, force=False):
+        r"""Read in aux file specification"""
+
+        data_file = open(os.path.abspath(path), 'r')
+
+        # Read past comments and blank lines
+        header_lines = 0
+        ignore_lines = True
+        while ignore_lines:
+            line = data_file.readline()
+            if line[0] == "#" or len(line.strip()) == 0:
+                header_lines += 1
+            else:
+                break
+
+        # Read in number of aux files
+        num_aux_files, tail = line.split("=:")
+        varname = tail.split()[0]
+        if varname != "num_aux_files":
+            raise IOError("It does not appear that this file contains aux " +
+                          "file data.")
+        num_aux_files = int(num_aux_files)
+
+        # Read in each aux file
+        self.aux_files = []
+        for n in range(num_aux_files):
+            self.aux_files.append(AuxFile(data_file))
+            data_file.readline()
+
+        data_file.close()
+
+# ==============================================================================
