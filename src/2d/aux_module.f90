@@ -72,7 +72,7 @@ contains
     !
     ! Associated with each file is a initialization type, init_type:
     !     as follows:
-    !     defines a perturbation (or definition of) aux(i,j,iauxinit)
+    !     defines a perturbation (or definition of) aux(init_type, i, j)
     ! ========================================================================
     subroutine set_aux_files(fname)
 
