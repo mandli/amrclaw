@@ -384,11 +384,11 @@ class AuxFile(object):
 
     def __init__(self, path):
         r""""""
-        self.path = None
+        self.path = path
         self.file_type = None
         self.init_type = None
         self.min_level = 1
-        self.max_level = None
+        self.max_level = 20
         self.fill_value = 0.0
 
 
@@ -398,7 +398,7 @@ class AuxFile(object):
                                                self.init_type)))
         output = "\n".join((output, "%s %s" % (self.min_level,
                                                self.max_level)))
-        output = "\n".join((output, "%s\nb" % (self.filL_value)))
+        output = "\n".join((output, "%s\n" % (self.fill_value)))
         return output
 
 
@@ -426,7 +426,7 @@ class AuxFileData(clawpack.clawutil.data.ClawData):
 
         self.data_write(value=len(self.aux_files), alt_name='num_aux_files')
         for aux_file in self.aux_files:
-            self._out_file.write(aux_file)
+            self._out_file.write(str(aux_file))
         self.close_data_file()
 
 
