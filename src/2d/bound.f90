@@ -89,37 +89,15 @@ subroutine bound(time,nvar,ng,valbig,mitot,mjtot,mptr,aux,naux)
   patchOnly = .false.  
 
 
-
-
-  ! left boundary
-  xl = xleft - ng*hx
-  xr = xleft
-  yb = ybot 
-  yt = ytop
-  if ((xl < xlower) .and. xperdom) then
-     call  prefilrecur(level,nvar,valbig,aux,naux,time,mitot,mjtot,1,ng+1, &
-          ilo-ng,ilo-1,jlo,jhi,ilo-ng,ihi+ng,jlo-ng,jhi+ng,patchOnly)
-  else
-     call filrecur(level,nvar,valbig,aux,naux,time,mitot,mjtot,1,ng+1,ilo-ng,ilo-1,jlo,jhi,patchOnly,mptr)
-  endif
-
-  ! right boundary
-  xl = xright
-  xr = xright + ng*hx
-  yb = ybot
-  yt = ytop
-
-  if ((xr .gt. xupper) .and. xperdom) then
-     call  prefilrecur(level,nvar,valbig,aux,naux,time,mitot,mjtot, &
-          mitot-ng+1,ng+1,ihi+1,ihi+ng,jlo,jhi,ilo-ng,ihi+ng,jlo-ng,jhi+ng,patchOnly)
-  else
-     call filrecur(level,nvar,valbig,aux,naux,time,mitot,mjtot, &
-          mitot-ng+1,ng+1,ihi+1,ihi+ng,jlo,jhi,patchOnly,mptr)
-  endif
+  ! Switch order of checking only for the x-periodic/y-extrap boundary condition
 
   ! bottom boundary
-  xl = xleft  - ng*hx
-  xr = xright + ng*hx
+  ! xl = xleft  - ng*hx
+  ! xr = xright + ng*hx
+  ! yb = ybot - ng*hy
+  ! yt = ybot
+  xl = xleft
+  xr = xright
   yb = ybot - ng*hy
   yt = ybot
 
@@ -132,12 +110,15 @@ subroutine bound(time,nvar,ng,valbig,mitot,mjtot,mptr,aux,naux)
      call filrecur(level,nvar,valbig,aux,naux,time,mitot,mjtot,1,1,ilo-ng,ihi+ng,jlo-ng,jlo-1,patchOnly,mptr)
   endif
 
-
   ! top boundary
-  xl = xleft - ng*hx
-  xr = xright + ng*hx
-  yb = ytop
-  yt = ytop + ng*hy
+  ! xl = xleft - ng*hx
+  ! xr = xright + ng*hx
+  ! yb = ytop
+  ! yt = ytop + ng*hy
+  xl = xleft
+  xr = xright
+  yb = ybot
+  yt = ybot + ng*hy
 
   if ( ((yt .gt. yupper) .and. (yperdom .or. spheredom)) .or. &
        (((xl .lt. xlower) .or. (xr .gt. xupper)) .and. xperdom) ) then
@@ -147,6 +128,43 @@ subroutine bound(time,nvar,ng,valbig,mitot,mjtot,mptr,aux,naux)
      call filrecur(level,nvar,valbig,aux,naux,time,mitot,mjtot, &
           1,mjtot-ng+1,ilo-ng,ihi+ng,jhi+1,jhi+ng,patchOnly,mptr)
   endif
+
+
+  ! left boundary
+  ! xl = xleft - ng*hx
+  ! xr = xleft
+  ! yb = ybot 
+  ! yt = ytop
+  xl = xleft - ng*hx
+  xr = xright
+  yb = ybot - ng*hy
+  yt = ytop + ng*hy
+  if ((xl < xlower) .and. xperdom) then
+     call  prefilrecur(level,nvar,valbig,aux,naux,time,mitot,mjtot,1,ng+1, &
+          ilo-ng,ilo-1,jlo,jhi,ilo-ng,ihi+ng,jlo-ng,jhi+ng,patchOnly)
+  else
+     call filrecur(level,nvar,valbig,aux,naux,time,mitot,mjtot,1,ng+1,ilo-ng,ilo-1,jlo,jhi,patchOnly,mptr)
+  endif
+
+  ! right boundary
+  ! xl = xright
+  ! xr = xright + ng*hx
+  ! yb = ybot
+  ! yt = ytop
+  xl = xleft
+  xr = xleft + ng*hx
+  yb = ybot - ng*hy
+  yt = ytop + ng*hy
+
+  if ((xr .gt. xupper) .and. xperdom) then
+     call  prefilrecur(level,nvar,valbig,aux,naux,time,mitot,mjtot, &
+          mitot-ng+1,ng+1,ihi+1,ihi+ng,jlo,jhi,ilo-ng,ihi+ng,jlo-ng,jhi+ng,patchOnly)
+  else
+     call filrecur(level,nvar,valbig,aux,naux,time,mitot,mjtot, &
+          mitot-ng+1,ng+1,ihi+1,ihi+ng,jlo,jhi,patchOnly,mptr)
+  endif
+
+
 
 
   ! set all exterior (physical)  boundary conditions for this grid at once
