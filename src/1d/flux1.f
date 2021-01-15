@@ -37,6 +37,9 @@ c
       use amr_module
       implicit double precision (a-h,o-z)
       external rp1
+
+      integer :: maxm, meqn, maux, mbc, mx
+
       dimension    q1d(meqn,1-mbc:maxm+mbc)
       dimension   amdq(meqn,1-mbc:maxm+mbc)
       dimension   apdq(meqn,1-mbc:maxm+mbc)
@@ -49,7 +52,9 @@ c
       dimension     s(mwaves, 1-mbc:maxm+mbc)
       dimension  wave(meqn, mwaves, 1-mbc:maxm+mbc)
 c
-      logical limit
+      integer :: icom, mw, i, m
+      logical :: limit
+
       common /comxt/ dtcom,dxcom,tcom,icom
 c
       limit = .false.

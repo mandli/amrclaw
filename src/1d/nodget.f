@@ -6,6 +6,8 @@ c
       use amr_module
       implicit double precision (a-h,o-z)
 
+      integer :: level, i, mptr, nborTotal, numGridsTotal
+
 c
 c ::::::::::::::::: NODGET ::::::::::::::::::::::::::::::::::::;
 c nodget =  get first free node of the linked list kept in node
@@ -48,6 +50,8 @@ c
 c
       use amr_module
       implicit double precision (a-h,o-z)
+
+      integer :: lev, mptr, nborTotal, numGridsTotal
 
 c
 c ::::::::::::::::: NODGET_BND ::::::::::::::::::::::::::::::::::::;

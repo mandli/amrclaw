@@ -7,12 +7,16 @@ c
        use amr_module
        implicit double precision (a-h,o-z)
 
-       double precision valdub(nvar,midub)
-       double precision auxdub(naux,midub)
-       double precision valbgc(nvar,mi2tot)
-       double precision auxbgc(naux,mi2tot)
-       dimension fp(nvar,mi2tot)
-       dimension fm(nvar,mi2tot)
+       integer :: nvar, naux, lcheck, mptr, nx, midub, mi2tot
+
+       real(kind=8) :: valdub(nvar,midub)
+       real(kind=8) :: auxdub(naux,midub)
+       real(kind=8) :: valbgc(nvar,mi2tot)
+       real(kind=8) :: auxbgc(naux,mi2tot)
+       
+
+       integer :: locold, mitot, mx, ng2
+       real(kind=8) :: fp(nvar,mi2tot), fm(nvar,mi2tot)
        
        !for setaux timing
        integer :: clock_start, clock_finish, clock_rate

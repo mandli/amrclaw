@@ -6,9 +6,12 @@ c
       
        implicit double precision (a-h, o-z)
 
+       integer :: midub, mi2tot, naux
        dimension     auxdub(naux,midub)
        dimension     auxbgc(naux,mi2tot)
-       character*10  auxtype(naux)
+       character(len=10) :: auxtype(naux)
+
+       integer :: iaux, i, ifine
 
 c :::::::::::::::::::::::: COARSEN ::::::::::::::::::::::::::::::::
 c coarsen = coarsen the fine grid auxiliary data (with double the usual

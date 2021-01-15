@@ -7,6 +7,8 @@ c
        use amr_module
        implicit double precision (a-h,o-z)
 
+       integer :: nvar, naux, lcheck, mptr, nx, mitot
+
        dimension fp(nvar,mitot)
        dimension fm(nvar,mitot)
 

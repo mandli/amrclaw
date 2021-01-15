@@ -7,8 +7,11 @@ c
       use amr_module
       implicit double precision (a-h, o-z)
 
+      integer :: ilo, ihi, mbuff, lev, ilofine, ihifine
       integer*1  iflags (ilo-mbuff:ihi+mbuff)
       integer*1  iflags2(ilofine-mbuff:ihifine+mbuff)
+
+      integer :: lratiox, i, ic, ifine, iset, mi
 
 c
 c ::::::::::::::::::::::::::: DOMUP :::::::::::::::::::::

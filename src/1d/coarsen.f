@@ -5,8 +5,11 @@ c
       
        implicit double precision (a-h, o-z)
 
+       integer :: midub, mi2tot, nvar
        dimension  valdub(nvar,midub)
        dimension  valbgc(nvar,mi2tot)
+
+       integer :: i, ifine, ivar
 
 c :::::::::::::::::::::::: COARSEN ::::::::::::::::::::::::::::::::
 c coarsen = coarsen the fine grid data (with double the usual

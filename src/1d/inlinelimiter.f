@@ -30,9 +30,12 @@ c     # given by dotl/wnorm2 and dotr/wnorm2, where wnorm2 is the 2-norm
 c     # of wave.
 c
       implicit double precision (a-h,o-z)
-      dimension mthlim(mwaves)
+      integer :: maxm, meqn, mwaves, mbc, mx
+      integer :: mthlim(mwaves)
       dimension wave(meqn, mwaves, 1-mbc:maxm+mbc)
       dimension    s(mwaves, 1-mbc:maxm+mbc)
+
+      integer :: mw, i, m
 c
 c
       do 200 mw=1,mwaves

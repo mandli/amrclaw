@@ -6,11 +6,16 @@ c
 c
       use amr_module
       implicit double precision (a-h,o-z)
-      logical   ee
- 
- 
-      logical foundFile
-      dimension intrtx(maxlv),intrtt(maxlv)
+
+      integer :: nsteps, nvar, naux      
+
+      integer :: i, ibuf, idif, isize, j, kcheck1, lenbc, lev, level
+      integer :: mitot, mold, mptr, mxnold, nx
+      integer :: intrtx(maxlv), intrtt(maxlv)
+      logical :: ee
+      logical :: foundFile
+
+      integer :: igetsp
 c
 c :::::::::::::::::::::::::::: RESTRT ::::::::::::::::::::::::::::::::
 c read back in the check point files written by subr. check.

@@ -6,10 +6,12 @@ c
       use amr_module
       implicit double precision (a-h,o-z)
 
- 
+      integer :: nvar, mptr, mi2tot, mitot, mibuff
       dimension  rctfine(nvar,mitot)
       dimension  rctcrse(nvar,mi2tot)
       dimension  rctflg(mibuff)
+
+      integer :: levm, numsp, i, ifine
 c
 c
 c ::::::::::::::::::::::::::::: ERRF1 ::::::::::::::::::::::::::::::::

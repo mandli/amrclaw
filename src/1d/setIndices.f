@@ -7,7 +7,8 @@ c
        use amr_module
        implicit double precision (a-h,o-z)
 
-       dimension ist(3), iend(3), ishift(3)
+       integer :: ilo, ihi, level
+       integer :: ist(3), iend(3), ishift(3)
 
 c ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 c  setIndices:  for periodicity a region that sticks out is wrapped into

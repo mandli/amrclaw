@@ -5,14 +5,19 @@ c
      .                       mbuff,lbase,lcheck,mibuff)
 
       use amr_module
+      implicit double precision (a-h,o-z)
 
-      integer*1 igridflags(ilo-mbuff:ihi+mbuff)
+      integer :: mptr, ilo, ihi, mbuff, lbase, lcheck, mibuff
+      integer*1 :: igridflags(ilo-mbuff:ihi+mbuff)
+
+      integer :: i, i1, i2, ibhi, iblo, ihi_coarse, ihifine, ilo_coarse
+      integer :: ilofine, ixhi, ixhi_unwrapped, ixlo, ixlo_unwrapped
+      integer :: lc, lev, mbase
+      integer :: ist(3), iend(3), ishift(3)
+      integer :: igridst(lcheck), igridend(lcheck)
 c icopy is dimensioned large enough, but will be used at several sizes
 c and accessed using loi-mbuff:hi_i+mbuff, etc.      
-      integer*1 icopy(mibuff)
-      dimension ist(3), iend(3), ishift(3)
-      dimension igridst(lcheck)
-      dimension igridend(lcheck)
+      integer*1 :: icopy(mibuff)
 
 c
 c set domain flags for this grid only, enlarged by buffer zone. check if any other base grids

@@ -7,9 +7,11 @@ c
       use amr_module
       implicit double precision (a-h, o-z)
 
-
+      integer :: ilo, ihi, mbuff, level
       integer*1  iflags (ilo-mbuff:ihi+mbuff)
       integer*1  iflags2(ilo-mbuff:ihi+mbuff)
+
+      integer :: i
 c
 c :::::::::::::::::::::::::  GRIDDOMSHRINK ::::::::::::::::::::::::::::
 c

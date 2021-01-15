@@ -10,12 +10,18 @@ c
 
       implicit double precision (a-h,o-z)
 
-      logical    vtime, dumpout/.false./, dumpchk/.false./
-      logical    rest, dump_final
-      dimension dtnew(maxlv), ntogo(maxlv), tlevel(maxlv)
-      integer clock_start, clock_finish, clock_rate
-      real(kind=8) cpu_start, cpu_finish
-      integer   tick_clock_finish, tick_clock_rate  
+      integer :: nvar, nstart, naux
+
+      integer :: i, ii, lbase, level, levnew, ncycle, nextchk, nextout
+      integer :: ntogo(maxlv)
+
+      logical :: vtime, dumpout = .false., dumpchk = .false.
+      logical :: rest, dump_final
+      dimension dtnew(maxlv), tlevel(maxlv)
+      
+      integer :: clock_start, clock_finish, clock_rate
+      real(kind=8) :: cpu_start, cpu_finish
+      integer ::tick_clock_finish, tick_clock_rate  
 
 c
 c :::::::::::::::::::::::::::: TICK :::::::::::::::::::::::::::::

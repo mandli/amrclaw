@@ -5,10 +5,14 @@ c
 
        implicit double precision (a-h, o-z)
 
+       integer :: nrow, nvar, lenbc, naux
+
        dimension qc(nvar,nrow)
        dimension qc1d(nvar,lenbc)
        dimension auxc(naux,nrow)
        dimension auxc1d(naux,lenbc)
+
+       integer :: index, ivar, iaux
 c
 c      store coarse perimeter worth of solution into 1d array.
 c      go around fine grid in following order

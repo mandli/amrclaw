@@ -7,10 +7,16 @@ c
        use amr_module
        implicit double precision (a-h, o-z)
 
-       logical debug/.true./
-       integer ist(3),iend(3),ishift(3)
-       logical borderx
-       integer thisBuff
+       integer :: mnew, lbase, ilo, ihi, nvar, naux, thisBuff
+
+       integer :: i, levnew, i1, i1_shifted, i2, i2_shifted, ibhi, iblo
+       integer :: ichi, iclo, ix, ix_unshifted, ixhi, ixlo, leni
+       integer :: lenrect, lev, levratx, locm, mptr
+       integer :: ist(3),iend(3),ishift(3)
+       logical :: borderx, debug = .true.
+       integer :: iadd
+
+       integer :: igetsp
 
 c      index into alloc from iclo:ichi and jclo:jchi, not 0..leni/j. 
        iadd(i) = locm + i - iclo

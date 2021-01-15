@@ -5,9 +5,14 @@ c
 
       use amr_module
       implicit  double precision (a-h,o-z)
-      dimension badpts(1,npts)
-      dimension iflags(npts), ixArray(npts)
-      logical db/.false./
+
+      integer :: npts, level, index, mbuff
+      dimension badpts(1, npts)
+
+      integer :: isize, k, i, intEquiv
+      integer :: iflags(npts), ixArray(npts)
+      logical :: db = .false.
+      integer :: iadd
  
       iadd(i) = (i+mbuff)
 c

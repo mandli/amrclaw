@@ -5,8 +5,12 @@ c
      .                              ilo_coarse,ihi_coarse,
      .                              mbuff)
 
-                                     
-       integer*1 iflags(ilo_coarse-mbuff:ihi_coarse+mbuff)
+    
+      implicit double precision (a-h,o-z)    
+      integer :: ixlo, ixhi, ilo_coarse, ihi_coarse, mbuff
+      integer*1 iflags(ilo_coarse-mbuff:ihi_coarse+mbuff)
+
+      integer :: i
 
 c
 c whole point of this routine is to index using the integer cords, not the

@@ -6,8 +6,13 @@ c
       use amr_module
       implicit double precision (a-h,o-z)
 
+      integer :: level, nvar, naux
 
-      integer listgrids(numgrids(level))
+      integer :: lget, ivar, i, ichi, iclo, ico, iff, ihi, ilo
+      integer :: iphi, iplo, levSt, loc, loccaux, locf, locfaux
+      integer :: mi, mitot, mkid, mptr, ng, nx
+      integer :: iadd, iaddcaux, iaddf, iaddfaux
+      integer :: listgrids(numgrids(level))
 
 c$$$  OLD INDEXING
 c$$$      iadd(i,j,ivar)  = loc     + i - 1 + mitot*((ivar-1)*mjtot+j-1)

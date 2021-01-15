@@ -12,10 +12,12 @@ c :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::;
       use gauges_module, only: print_gauges_and_reset_nextLoc
 
       implicit double precision (a-h,o-z)
-      integer tchkunit
-      parameter (tchkunit = 13)
-      character  chkname*13
-      character  tchkname*13
+
+      integer :: nsteps, nvar, naux
+
+      integer :: ipos, i, idigit, ii, nstp
+      integer, parameter :: tchkunit = 13
+      character(len=13) :: chkname, tchkname
 
       write(6,601) time,nsteps
  601  format('Creating checkpoint file at t = ',e16.9,'  nsteps = ',i5)

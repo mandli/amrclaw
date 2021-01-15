@@ -6,7 +6,12 @@ c
       use amr_module
       implicit double precision (a-h,o-z)
 
-      logical  rest
+      integer :: level, nvar, naux
+      logical :: rest
+
+      integer :: mptr, ivar, i, loc, locaux, mitot, nx
+
+      integer :: iadd, iaddaux
 
 c      iadd(i,j,ivar)  = loc + i - 1 + mitot*((ivar-1)*mjtot+j-1) OLD INDEXING
 c      iaddaux(i,j) = locaux + i - 1 + mitot*(j-1) +

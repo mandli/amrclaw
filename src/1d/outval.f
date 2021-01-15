@@ -6,6 +6,10 @@ c
       use amr_module
       implicit double precision (a-h,o-z)
 
+      integer :: nvar, mitot, mptr, naux
+
+      integer :: level, i, ivar, iaux
+
       dimension  val(nvar,mitot)
       dimension  aux(naux,mitot)
       logical    outgrd

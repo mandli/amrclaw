@@ -8,9 +8,15 @@ c     1                  maxsp,iused,mptr)
       use amr_module
       implicit double precision (a-h,o-z)
 
+      integer :: nvar, naux, mitot, maxsp, mptr
+      integer :: listbc(4, maxsp)
+
+      integer :: i, icrse, iflag, iside, iside1, ispot, ivar, kidlst
+      integer :: levc, lkid, locaux, mkid, norm
+      integer :: iused(mitot)
+      integer :: iaddaux
  
-       dimension val(nvar,mitot),listbc(4,maxsp),
-     1           iused(mitot)
+       dimension val(nvar,mitot)
 
 c  OLD INDEXING
 c      iaddaux(i,j) = locaux + i-1 +  mitot*(j-1) 

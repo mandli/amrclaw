@@ -6,7 +6,10 @@ c
        use amr_module
        implicit double precision (a-h, o-z)
 
+       integer :: ilo, ihi, mbuff, level
        integer*1  iflags(ilo-mbuff:ihi+mbuff)
+
+       integer :: i, ixlo, ixhi, ilo_coarse, ihi_coarse
 
 c ****************************************************************
 c  setPhysBndryFlags = if grid borders the physical domain then
@@ -30,7 +33,7 @@ c             iflags(i) = iflags(0)   ! extend using whatever 1st col inside is
             end do
        endif
 
-       if (ihi+mbuff .ge. iregsz(level) .and. .not. xperdom) then
+       if (ihi+mbuff >= iregsz(level) .and. .not. xperdom) then
 c       set right flagged points to be ok
             do i = iregsz(level), ihi+mbuff
 c             iflags(i) = iflags(iregsz(level)-1)

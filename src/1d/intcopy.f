@@ -3,10 +3,14 @@ c --------------------------------------------------------------------
 c
        subroutine intcopy(val,mitot,nvar,ilo,ihi,level,iputst)
 
-      use amr_module
+       use amr_module
        implicit double precision (a-h, o-z)
 
+       integer :: mitot, nvar, ilo, ihi, level, iputst
        dimension val(nvar,mitot)
+
+       integer :: mptr, ivar, i, iglo, ighi, ixhi, ixlo, loc, mi, nx
+       integer :: iadd
 
 
 c   OLD INDEXING

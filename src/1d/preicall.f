@@ -7,12 +7,15 @@ c
       use amr_module
       implicit double precision (a-h,o-z)
 
+      integer :: nrow, nvar, naux, ilo, ihi, level
       dimension fliparray((nrow)*nghost*(nvar+naux))
       dimension val(nvar,nrow)
       dimension aux(naux,nrow)
 
-      dimension ist(3), iend(3), ishift(3)
-      logical   xint
+      integer :: ivar, iaux, i, locflip, locflipaux, i1, i2, iputst
+      integer :: ist(3), iend(3), ishift(3)
+      logical :: xint
+      integer :: iadd, iaddaux
       
       !for setaux timing
       integer :: clock_start, clock_finish, clock_rate

@@ -7,8 +7,14 @@ c
        use amr_module
        implicit double precision (a-h, o-z)
 
+       integer :: nrow, nvar, naux, ilo, ihi, level, iputst
+
        dimension val(nvar,nrow)
        dimension aux(naux,nrow)
+
+       integer :: ivar, i, mptr, iglo, ighi, ialloc, iaux, ixhi, ixlo
+       integer :: loc, locaux, mitot, nx
+       integer :: iadd, iaddaux
 
 
 c NEW INDEX ORDERING

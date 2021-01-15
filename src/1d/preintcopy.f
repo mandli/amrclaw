@@ -7,9 +7,14 @@ c
       use amr_module
       implicit double precision (a-h,o-z)
 
+      integer :: mitot, nvar, ilo, ihi, level
+
       dimension fliparray((mitot)*nghost*nvar)
       dimension val(nvar,mitot)
-      dimension ist(3), iend(3), ishift(3)
+
+      integer :: ivar, i, locflip, i1, i2, iputst
+      integer :: ist(3), iend(3), ishift(3)
+      integer :: iadd
 
 c  NEW INDEXING ORDER SWITCHED
       iadd(ivar,i)  = locflip + ivar-1 + nvar*(i-1)

@@ -5,7 +5,11 @@ c
 c
       use amr_module
       implicit double precision (a-h,o-z)
-      logical  outgrd
+
+      integer :: mlev, nvar, naux
+
+      integer :: level, mptr
+      logical :: outgrd
 
 c
 c ::::::::::::::::::::::: OUTTRE :::::::::::::::::::::::::::::::::::

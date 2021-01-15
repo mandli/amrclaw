@@ -4,7 +4,11 @@ c
       subroutine outmsh(mptr,outgrd,nvar,naux)
       use amr_module
       implicit double precision (a-h,o-z)
-      logical  outgrd
+
+      integer :: mptr, nvar, naux
+
+      integer :: lev, loc, locaux, mitot
+      logical :: outgrd
 
 
 c

@@ -6,10 +6,11 @@ c
       use amr_module
       implicit double precision (a-h, o-z)
 
-
+      integer :: ilo, ihi, mbuff
       integer*1  i2(ilo-mbuff:ihi+mbuff)
       integer*1  i1(ilo-mbuff:ihi+mbuff)
 
+      integer :: i
 c
 c ::::::::::::::::::::::::::: GRIDDOMCOPY :::::::::::::::::::::
 c 

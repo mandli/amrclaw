@@ -5,6 +5,11 @@ c
 
        use amr_module
        implicit double precision (a-h, o-z)
+
+       integer :: ilo, ihi, mbuff
+
+       integer :: i, mlo, mhi, m
+
        dimension rectflags(ilo-mbuff:ihi+mbuff)
        dimension copyflags(ilo-mbuff:ihi+mbuff)
 

@@ -5,8 +5,13 @@ c
 c
       use amr_module
       implicit double precision (a-h,o-z)
-      logical    vtime
 
+      integer :: nvar, nx, naux
+
+      integer :: level, locaux, mitot, mptr, ncells, ngrids
+      logical :: vtime
+
+      integer :: nodget
 c
 c  allocate initial coarse grid domain. set node info & initialize grid
 c  initial space and time step set here too

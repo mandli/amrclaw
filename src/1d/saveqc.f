@@ -6,6 +6,13 @@ c
       use amr_module
       implicit double precision (a-h,o-z)
       
+      integer :: level, nvar, naux
+
+      integer :: levc, ng, i, ichi, iclo, ihi, ilo, ist, lenbc, locaux
+      integer :: loctmp, loctx, mkid, nrow, nx
+
+      integer :: igetsp
+
       !for setaux timing
       integer :: clock_start, clock_finish, clock_rate
       real(kind=8) :: cpu_start, cpu_finish
