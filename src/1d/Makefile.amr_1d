@@ -97,7 +97,7 @@ COMMON_SOURCES += \
   $(AMRLIB)/resize_alloc.f90 \
   $(AMRLIB)/auxcoarsen.f \
   $(AMRLIB)/coarsen.f \
-  $(AMRLIB)/copysol.f \
+  $(AMRLIB)/copysol.f90 \
   $(AMRLIB)/prepregstep.f \
   $(AMRLIB)/prepbigstep.f \
   $(AMRLIB)/errest.f \
