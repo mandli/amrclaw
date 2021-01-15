@@ -6,6 +6,14 @@ c
       use amr_module
       implicit double precision (a-h,o-z)
 
+      integer :: level, nvar
+
+      integer :: numbcs, maxsp, i, ichi, iclo, ihi, ilo, imax
+      integer :: iphi, iplo, ispot, jchi, jclo, jhi, jlo, kflag, locbc
+      integer :: mkid, mpar
+
+      integer :: igetsp
+
       parameter(numbcs=4)
 c
 c :::::::::::::::::::: PREPC ::::::::::::::::::::::::::::::::::::::

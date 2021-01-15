@@ -8,10 +8,17 @@ c
      1     adjoints,trange_start,trange_final,adjoint_flagging,grid_num
       implicit double precision (a-h,o-z)
 
-      integer omp_get_thread_num, omp_get_max_threads
-      integer mythread/0/, maxthreads/1/
-      integer listgrids(numgrids(lcheck)), locuse
-      logical keepflagging
+      integer :: nvar, naux, lcheck
+
+      integer :: mbuff, i, jg, levSt, locamrflags, locaux, locbig
+      integer :: locnew, locold, mibuff, mitot, mptr, nx
+
+      integer :: igetsp
+
+      integer :: omp_get_thread_num, omp_get_max_threads
+      integer :: mythread = 0, maxthreads = 1
+      integer :: listgrids(numgrids(lcheck)), locuse
+      logical :: keepflagging
 
 c ::::::::::::::::::::: FLAGGER :::::::::::::::::::::::::
 c

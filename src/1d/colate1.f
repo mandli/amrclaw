@@ -5,9 +5,15 @@ c
 c
       use amr_module
       implicit  double precision (a-h,o-z)
+
+      integer :: len, lcheck, nUniquePts, lbase
+      integer :: i, ibytesPerDP, iend, iflagsize, ihi, ilo, imax, imin
+      integer :: index, ishift, ist, iwrap, locamrflags, mbuff, mibuff
+      integer :: mptr, npts, nx, iadd
+
       dimension badpts(1,len)
       dimension ist(3), iend(3), ishift(3)
-      logical db/.false./
+      logical :: db = .false.
 
 c
 c    index for flag array now based on integer index space, not 1:mibuff

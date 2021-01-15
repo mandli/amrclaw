@@ -7,6 +7,9 @@ c
       use amr_module
       implicit double precision (a-h,o-z)
 
+      integer :: mptr, listbc, ndimx, nvar, maxsp
+
+      integer :: ispot, i, inlist, intopl, ivar, kidlst, level, mkid, nx
 
       dimension xfluxp(nvar,ndimx)
       dimension xfluxm(nvar,ndimx)

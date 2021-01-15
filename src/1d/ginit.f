@@ -5,7 +5,13 @@ c
 c
       use amr_module
       implicit double precision (a-h,o-z)
-      logical first
+      
+      integer :: msave, nvar, naux
+
+      integer :: level, mptr, k, loc, loc2, locaux, mitot, nx
+      logical :: first
+
+      integer :: igetsp
       
       !for setaux timing
       integer :: clock_start, clock_finish, clock_rate

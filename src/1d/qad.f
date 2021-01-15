@@ -6,16 +6,18 @@ c
      .                maux,aux,auxc1d,delt,mptr)
 
       use amr_module
-       implicit double precision (a-h, o-z)
+      implicit double precision (a-h, o-z)
 
-
-       logical qprint
-
-       dimension valbig(nvar,mitot)
-       dimension qc1d(nvar,lenbc)
-       dimension svdflx(nvar,lenbc)
-       dimension aux(maux,mitot)
-       dimension auxc1d(maux,lenbc)
+      integer :: iaux, i, nvar, mitot, lenbc, lratiox, maux, mptr
+      integer :: index, influx, ivar, level, lind, ma, iaddaux
+      
+      logical qprint
+      
+      dimension valbig(nvar,mitot)
+      dimension qc1d(nvar,lenbc)
+      dimension svdflx(nvar,lenbc)
+      dimension aux(maux,mitot)
+      dimension auxc1d(maux,lenbc)
 
 c
 c ::::::::::::::::::::::::::: QAD ::::::::::::::::::::::::::::::::::

@@ -1,7 +1,7 @@
 c
 c ----------------------------------------------------------
 c
-      function igetsp (nwords)
+      integer function igetsp (nwords)
 c
       use amr_module
       implicit double precision (a-h,o-z)
@@ -15,6 +15,10 @@ c  is  mptr.  lenf = current length of lfree list.
 c
 c ::::::::::::::::::::::::::: IGETSP ::::::::::::::::::::::::::::
 c
+
+      integer :: nwords
+      integer :: i, iadd_size, iendtake, istatus, itake, j, left
+      integer :: new_size
 
 !$OMP CRITICAL (MemMgmt)
 

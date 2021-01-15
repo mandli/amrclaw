@@ -6,7 +6,9 @@ c
       use amr_module
       implicit double precision (a-h,o-z)
 
-
+      integer :: mptr1
+      integer :: mptr, level, nx, minsize, nxl, lratio, mptrnx, nxr
+      integer :: nodget
 c
 c :::::::::::::  BIRECT :::::::::::::::::::::::::::::::::::::::
 c check each grid, starting with mptr1 (either newstl or lstart)

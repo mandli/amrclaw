@@ -6,12 +6,15 @@ c
       use amr_module
       implicit double precision (a-h,o-z)
 
-
-      logical    vtime
+      integer :: nvar, naux, numbad, lcheck, lbase
+      integer :: iadd, i, ibytesPerDP, ihi, ilo, jg, levSt, nx, igetsp
+      integer :: locamrflags, locbig, locdom2, locdomflags, mbuff
+      integer :: mibuff, mitot, mptr, numflagged, numpro, numpro2
+      
       integer listgrids(numgrids(lcheck))
       integer omp_get_thread_num, omp_get_max_threads
-      integer mythread/0/, maxthreads/1/
-      data       vtime/.false./
+      integer :: mythread = 0, maxthreads = 1
+      logical :: vtime = .false.
 
 c     this indexing is for amrflags array, in flag2refine from 1-mbuff:mx+mbuff
 c     but here is from 1:mibuff

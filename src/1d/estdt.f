@@ -9,6 +9,9 @@ c  estimate the initial time step for the given values
 c ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::;
 
        implicit double precision (a-h, o-z)
+
+       integer :: mitot, nvar, nghost, naux
+       
        dimension val(nvar,mitot)
        dimension aux(naux,mitot)
 c

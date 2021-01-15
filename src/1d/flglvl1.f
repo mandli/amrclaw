@@ -6,7 +6,14 @@ c
 c
       use amr_module
       implicit double precision (a-h,o-z)
-      integer clock_start, clock_finish, clock_rate
+
+      integer :: nvar, naux, lcheck, nxpts, index, lbase, npts
+
+      integer :: numbad, ibytesPerDP, locamrflags, locdom2
+      integer :: locdomflags, mbuff, mptr, nwords, nx
+      integer :: clock_start, clock_finish, clock_rate
+
+      integer :: igetsp
 c
 c :::::::::::::::::::: FLGLVL :::::::::::::::::::::::::::::::::
 c
@@ -75,6 +82,10 @@ c
 
        use amr_module
        implicit double precision (a-h, o-z)
+
+       integer :: lcheck
+       integer :: mptr, locamrflags, locdomflags, locdom2
+       integer :: nx, mbuff, mibuff, ibytesPerDP, nwords
 
        mptr = lstart(lcheck)
  10          continue

@@ -7,9 +7,14 @@ c
       use amr_module
       implicit double precision (a-h,o-z)
 
-      integer omp_get_thread_num, omp_get_max_threads
-      integer mythread/0/, maxthreads/1/
-      integer newnumgrids(maxlv), listnewgrids(maxnumnewgrids)
+      integer :: lbase, lfnew, nvar, naux, maxnumnewgrids
+      integer :: level, ihi, ilo, j, lcheck, levend, loc, locaux
+      integer :: mic, mitot, mold, mptr, nwords, nx, num
+      integer :: igetsp
+
+      integer :: omp_get_thread_num, omp_get_max_threads
+      integer :: mythread = 0, maxthreads = 1
+      integer :: newnumgrids(maxlv), listnewgrids(maxnumnewgrids)
 
 c
 c ::::::::::::::::::::::::: GFIXUP ::::::::::::::::::::::::::::::::;
@@ -180,7 +185,10 @@ c  so I didnt want to have to deal with it
 
        use amr_module
        implicit double precision (a-h,o-z)
-       integer listnewgrids(num)
+
+       integer :: num, level
+       integer :: listnewgrids(num)
+       integer :: j, mptr
 
        mptr = newstl(level)
        do j = 1, num

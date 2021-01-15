@@ -165,8 +165,6 @@ contains
       logical foundFile, initial
 
       real(kind=8), allocatable, target, dimension(:) :: new_storage
-      iadd(ivar,i)  = adjoints(k)%loc(mptr) &
-             + ivar - 1 + adjoints(k)%meqn*(i-1)
 
       ! Checking to see if fort.t file exists
       ladjfile = len(trim(adjfile))
@@ -277,6 +275,13 @@ contains
 
       adjoints(k)%lfine = maxval(adjoints(k)%gridlevel)
 
+    contains
+        pure integer function iadd(ivar, i)
+            implicit none
+            integer, intent(in) :: ivar, i
+            iadd = adjoints(k)%loc(mptr) &
+                        + ivar - 1 + adjoints(k)%meqn*(i-1)
+        end function iadd
     end subroutine reload
 
 ! ========================================================================
@@ -446,12 +451,10 @@ contains
         logical, intent(in) :: mask_forward(1-mbc_f:mx_f+mbc_f)
 
         integer :: z,level, iz(1-mbc_f:mx_f+mbc_f), &
-                      ivar,i, iadd, iaddaux, loc
+                      ivar,i, loc
         real(kind=8) :: q_interp(nvar,1-mbc_f:mx_f+mbc_f), denom
         real(kind=8) :: x, xhigh_a,x_f
         real(kind=8) :: dxz(1-mbc_f:mx_f+mbc_f), a
-
-        iadd(ivar,i)  = loc + ivar - 1 + adjoints(r)%meqn*(i-1)
 
         q_interp = 0.0
         xhigh_a  = xlower_a + mx_a*dx_a
@@ -481,6 +484,14 @@ contains
             endif
         enddo
 
+    contains
+
+        pure integer function iadd(ivar, i)
+            implicit none
+            integer, intent(in) :: ivar, i
+            iadd = loc + ivar - 1 + adjoints(r)%meqn*(i-1)
+        end function iadd
+
     end subroutine interp_adjoint
 
 ! ========================================================================
@@ -499,6 +510,8 @@ contains
 
       implicit double precision (a-h,o-z)
  
+      integer :: nvar, mptr, mi2tot, mitot, mibuff, naux
+
       dimension  rctfine(nvar,mitot)
       dimension  rctcrse(nvar,mi2tot)
       dimension  rctflg(mibuff)
@@ -506,6 +519,8 @@ contains
       dimension  err_crse(nvar,mi2tot)
       dimension  auxfine(naux,mitot)
       logical mask_selecta(totnum_adjoints)
+
+      integer :: i, ifine, jg, k, levm, numsp, nx
 
 !
 !

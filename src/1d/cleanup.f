@@ -10,6 +10,9 @@ c :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::;
 
       use amr_module
       implicit double precision (a-h,o-z)
+
+      integer :: nvar, naux
+      integer :: level, mptr, nx, mitot, nwords
 c
 c      ## clean up storage to double check that everything taken care of
 c      ## done after the checkpoint so pointers sitll work on restart

@@ -6,14 +6,22 @@ c
 c
       use amr_module
       implicit double precision (a-h,o-z)
-      integer clock_start, clock_finish, clock_rate
-      integer clock_start1
+
+      integer :: lbase, lcheck, nvar, naux
+
+      integer :: i, ibase, icl, idim, index, levnew, mnew, nclust
+      integer :: nptmax, npts
+
+      integer :: nodget
+
+      integer :: clock_start, clock_finish, clock_rate
+      integer :: clock_start1
 c
       dimension  corner(nsize,maxcl)
-      integer    numptc(maxcl), prvptr
-      logical    cout
-      logical    fit1, nestck1
-      data       cout/.false./
+      integer :: numptc(maxcl), prvptr
+      
+      logical :: fit1, nestck1
+      logical :: cout = .false.
 c
 c ::::::::::::::::::::: GRDFIT :::::::::::::::::::::::::::::::::;
 c  grdfit called by setgrd and regrid to actually fit the new grids

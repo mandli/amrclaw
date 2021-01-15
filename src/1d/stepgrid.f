@@ -26,6 +26,9 @@ c :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
       implicit double precision (a-h,o-z)
       external rp1
 
+      integer :: mitot, mbc, nvar, mptr, maux
+      integer :: i, icom, ivar, m, mbig, meqn, mx
+
       common /comxyt/ dtcom,dxcom,tcom,icom
 
       dimension q(nvar,mitot)

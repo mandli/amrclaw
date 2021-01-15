@@ -14,6 +14,9 @@ c  to conserve kappa*q, not q. calculate the discrepancy
 c  in kappa*q using this q, and modify q to account for it.
 c ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
+      integer :: mitot, mic, nvar, naux, levc
+      integer :: ic, ivar, ico, ifine, lratiox
+
       dimension   val(nvar,mitot), valc(nvar,mic)
       dimension   aux(naux,mitot), auxc(naux,mic)
       dimension   setflags(mitot)

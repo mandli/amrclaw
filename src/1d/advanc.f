@@ -6,6 +6,8 @@ c
       use amr_module
       implicit double precision (a-h,o-z)
 
+      integer :: level, nvar, naux
+      integer :: j, levst, locaux, locnew, mitot, mptr, nx, num
 
       logical    vtime
       integer omp_get_thread_num, omp_get_max_threads
@@ -16,6 +18,7 @@ c
       real(kind=8) cpu_start, cpu_finish
       real(kind=8) cpu_startBound, cpu_finishBound
       real(kind=8) cpu_startStepgrid, cpu_finishStepgrid
+
 
 c     maxgr is maximum number of grids  many things are
 c     dimensioned at, so this is overall. only 1d array
@@ -140,7 +143,8 @@ c
 
        use amr_module
        implicit double precision (a-h,o-z)
-       integer listgrids(num)
+       integer :: listgrids(num), num, level
+       integer :: j, mptr
 
        mptr = lstart(level)
        do j = 1, num
@@ -165,6 +169,9 @@ c
       use gauges_module, only: update_gauges, num_gauges
       implicit double precision (a-h,o-z)
 
+      integer :: mptr, mitot, nvar, naux
+      integer :: i, lenbc, level, locaux, locnew, locold, locsvf, locsvq
+      integer :: locx1d, ntot, nx, num
 
       integer omp_get_thread_num, omp_get_max_threads
       integer mythread/0/, maxthreads/1/

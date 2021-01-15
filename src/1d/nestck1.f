@@ -6,10 +6,15 @@ c
 c
       use amr_module
       implicit double precision (a-h,o-z)
-      dimension  badpts(1,npts)
-      logical baseCheck, isNested
 
-      integer   numptc(maxcl), zeroBuff
+      integer :: mnew, lbase, npts, icl, nclust, nvar, naux
+
+      integer :: levnew, i, idir, ipt, lratiox, nmove, ntop
+
+      dimension  badpts(1,npts)
+      logical :: baseCheck, isNested
+
+      integer :: numptc(maxcl), zeroBuff
 c
 c ::::::::::::::::::::::: NESTCK :::::::::::::::::::::::::::::::::::
 c

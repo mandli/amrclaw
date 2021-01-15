@@ -15,6 +15,8 @@ c
       use amr_module
       implicit double precision (a-h,o-z)
 
+      integer :: index, nwords
+      integer :: i, ii, iplace, ipp1, iprev, nexti
 
 !$OMP CRITICAL (MemMgmt)
 
