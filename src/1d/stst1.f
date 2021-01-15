@@ -102,7 +102,7 @@ c
       timeGrdfitAll      = 0
       timeFlagger        = 0
       timeFlglvl         = 0
-      timeFlglvlTot      = 0
+      timeFilvalTot      = 0
       timeGrdfit2        = 0
       timeRegridding     = 0
       timeRegriddingCPU  = 0.d0
