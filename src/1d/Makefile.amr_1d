@@ -50,7 +50,7 @@ COMMON_SOURCES += \
   $(AMRLIB)/signs.f \
   $(AMRLIB)/findcut.f \
   $(AMRLIB)/smartbis.f \
-  $(AMRLIB)/putnod.f \
+  $(AMRLIB)/putnod.f90 \
   $(AMRLIB)/putsp.f \
   $(AMRLIB)/regrid.f \
   $(AMRLIB)/setgrd.f \
