@@ -6,7 +6,11 @@ c
       use amr_module
       implicit double precision (a-h,o-z)
 
-      parameter(numbcs=4)
+      integer :: lbase, level, nvar, naux
+
+      integer :: mptr, lenbc, nx
+
+      integer, parameter :: numbcs = 4
 
 c
 c ::::::::::::::::::::::::::::::: PUTSP :::::::::::::::::::::::::
@@ -17,7 +21,7 @@ c first compute max. space allocated in node cfluxptr.
 c
 c :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 c
-      if (level .eq. lfine) go to 30
+      if (level == lfine) go to 30
 c
       mptr  = lstart(level)
  20      call reclam(node(cfluxptr,mptr), numbcs*listsp(level))

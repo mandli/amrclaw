@@ -6,8 +6,12 @@ c
       use amr_module
       implicit double precision (a-h,o-z)
 
-      logical  vtime
-      data     vtime/.false./
+      integer :: nvar, naux
+
+      integer :: levnew, i, itemp, kfac, lbase, lev, level, levold
+      integer :: lfnew, mptr, ncells, ngrids 
+
+      logical :: vtime = .false.
 
 c     # may as well not bother to calculate time step for error est.
 c

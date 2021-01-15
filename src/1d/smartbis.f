@@ -9,12 +9,15 @@ c
       use amr_module
       implicit double precision (a-h,o-z)
 
-      dimension     badpts(1,npts),intcorn(nsize,maxcl)
-c
+      integer :: npts, nclust, lbase, idim
+      integer :: intcorn(nsize,maxcl), numptc(maxcl)
+
+      integer :: i, ibot, ibump, icl, ico, idir, iend, ihi, ilo, index
+      integer :: iside, ist, itop, nmove, iscr(idim)
 c  iscr now stackbased, no need for use of alloc
-      dimension     iscr(idim)
-      integer       nclust, numptc(maxcl)
-      parameter     (usemin=.4)
+C       real, parameter :: usemin = 0.4
+
+      dimension     badpts(1,npts)
 c
 c :::::::::::::::::::::::::::: SMARTBIS :::::::::::::::::::::::::;
 c smart bisect lines until cutoff reached for each.

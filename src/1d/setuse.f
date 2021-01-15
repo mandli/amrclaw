@@ -27,9 +27,11 @@ c :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::;
 c
       use amr_module
       implicit double precision (a-h,o-z)
-      parameter(numbcs=4)
-      dimension listbc(numbcs,maxsp)
 
+      integer :: maxsp, ispot, mkid, ilo, ihi, iclo, ichi, kflag
+      integer :: ibc, ist, iend, lkid
+      integer, parameter :: numbcs = 4
+      integer :: listbc(numbcs, maxsp)
 
       ibc = ispot
       ist  = iclo - 1

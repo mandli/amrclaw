@@ -5,6 +5,12 @@ c
 c
       use amr_module
       implicit double precision (a-h,o-z)
+
+      integer :: level, numpro, ilo, ihi, mbuff
+
+      integer :: lrat2x, i, iend, ikidhi, ikidlo, ist, ixhi, ixlo
+      integer :: levpro, mkid
+
       dimension rectflags(ilo-mbuff:ihi+mbuff)
 c
 c  ::::::::::::::::::::::: PROJEC2 ::::::::::::::::::::::::::::::

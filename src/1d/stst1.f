@@ -1,12 +1,12 @@
 c
 c --------------------------------------------------------------
 c
-      subroutine stst1
+      subroutine stst1()
 c
       use amr_module
       implicit double precision (a-h,o-z)
 
-
+      integer :: i, level
 c
 c :::::::::::::::::::::::::::::: STST1 ::::::::::::::::::::::::::::::::
 c    intialize a few variables needed before calling user set up

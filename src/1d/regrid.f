@@ -5,8 +5,14 @@ c
 c
       use amr_module
       implicit double precision (a-h,o-z)
-      integer newnumgrids(maxlv)
-      integer clock_start2, clock_finish, clock_rate
+
+      integer :: nvar, lbase, naux
+
+      integer :: lcheck, i, lev, level, levnew, lfnew, maxnumnewgrids
+      integer :: mptr, ncells, ngridcount, numg
+      integer :: newnumgrids(maxlv)
+
+      integer :: clock_start2, clock_finish, clock_rate
 c
 c :::::::::::::::::::::::::::: REGRID :::::::::::::::::::::::::::::::
 
@@ -126,7 +132,11 @@ c
 c
       use amr_module
       implicit double precision (a-h,o-z)
-      integer listgrids(numg), cost(numg), index(numg), prevptr
+
+      integer :: level, numg
+      
+      integer :: i, mptr, prevptr
+      integer :: listgrids(numg), cost(numg), index(numg)
 c
 c   slow sort for now, putting most expensive grids first on lstart list
 c   measure cost by number of cells

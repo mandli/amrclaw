@@ -5,6 +5,9 @@ c
      &                  ilo,ihi)
 c
        implicit double precision (a-h,o-z)
+
+       integer :: npts, iscr, idim, ist, iend, ilo, ihi
+       integer :: i, iloc, ipt
        dimension badpts(1,npts)
        dimension iscr(idim)
 c

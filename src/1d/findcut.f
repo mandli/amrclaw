@@ -13,6 +13,10 @@ c
       use amr_module
       implicit double precision (a-h,o-z)
 
+      integer :: icl, iscr, idim, index, iside, ilo, ihi
+
+      integer :: ithres, minoff, i, icur, imid, indexi, ipre, itemp1 
+      integer :: itemp2, locdif, locmax, locmaxi
 
       dimension iscr(idim)
 
