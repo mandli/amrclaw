@@ -7,9 +7,9 @@ Regression data for that code is in adjoint/regression_data but is not
 being tested against.
 """
 
-from __future__ import print_function
-from __future__ import absolute_import
-import sys,os
+import sys
+import os
+import subprocess
 import unittest
 
 thisfile = os.path.realpath(__file__)
@@ -24,14 +24,19 @@ class Acoustics2DAdjointTest(test.AMRClawRegressionTest):
 
     def runTest(self, save=False):
         
-        # Run adjoint problem
-        adjointdir = testdir + '/adjoint'
-
-        # Running the adjoint problem (with no testing)
-        os.chdir(adjointdir)
-        os.system('make -s new')
-        os.system('make .output > /dev/null')
-        os.chdir(testdir)
+        # Build and run adjoint code
+        adjoint_path = os.path.join(self.test_path, "adjoint")
+        self.stdout.write("Running adjoint sub\n")
+        self.stdout.write(f"  adjoint path: {adjoint_path}\n")
+        self.stdout.write(f"  temp path: {str(self.temp_path)}\n")
+        exe_cmd = ['make', '-C', adjoint_path, '.exe']
+        subprocess.check_call(['make', '-C', adjoint_path, '.exe'],
+                                                    stdout=self.stdout,
+                                                    stderr=self.stderr)
+        exe_cmd = ['make', '-C', adjoint_path, '.output']
+        subprocess.check_call(['make', '-C', adjoint_path, '.output'],
+                                                    stdout=self.stdout,
+                                                    stderr=self.stderr)
 
         # Write out data files
         self.load_rundata()
