@@ -25,8 +25,8 @@
 !! \param my number of cells in *j* direction
 !! \param mbuff width of buffer region
 !! \param maux number of auxiliary variables
-!! \param xlower x-coordinate of left physical boundary
-!! \param ylower y-coordinate of lower physical boundary
+!! \param xlower x-coordinate of left patch boundary
+!! \param ylower y-coordinate of lower patch  boundary
 !! \param dx spacing in *i* direction
 !! \param dy spacing in *j* direction
 !! \param level AMR level of this grid
@@ -57,7 +57,9 @@ subroutine flagregions2(mx,my,mbuff,xlower,ylower,dx,dy,level,t, &
     ! Locals
     integer :: i,j,m,i1,i2,j1,j2, k,k1,k2
     real(kind=8) :: x_low,y_low,x_hi,y_hi, xupper,yupper
-    integer, allocatable :: minlevel(:,:), maxlevel(:,:)
+    real(kind=8) :: eps
+    !integer, allocatable :: minlevel(:,:), maxlevel(:,:)
+    integer :: minlevel(mx,my), maxlevel(mx,my)
     integer :: min_current_minlevel, min_current_maxlevel
     
     real(kind=8) :: x_lower_y_low, x_lower_y_hi, x_upper_y_low, x_upper_y_hi, &
@@ -66,10 +68,11 @@ subroutine flagregions2(mx,my,mbuff,xlower,ylower,dx,dy,level,t, &
                     y_lower_s, y_upper_s, alpha_x_low, alpha_x_hi
 
     !write(58,*) 'level, lower: ',level,xlower,ylower  ! +++
-    allocate(minlevel(mx,my), maxlevel(mx,my))
+    !allocate(minlevel(mx,my), maxlevel(mx,my))
     
     minlevel = 0
     maxlevel = 0
+    eps = 1.d-12  ! somewhat larger than double precision roundoff
 
     xupper = xlower + mx*dx
     yupper = ylower + my*dy
@@ -103,15 +106,15 @@ subroutine flagregions2(mx,my,mbuff,xlower,ylower,dx,dy,level,t, &
         if (xlower >= regions(m)%x_hi .or. xupper <= regions(m)%x_low) then
             cycle rloop  ! no intersection
         else
-            i1 = max(floor((regions(m)%x_low - xlower) / dx) + 1, 1)
-            i2 = min(floor((regions(m)%x_hi -xlower) / dx) + 1, mx)
+            i1 = max(floor((regions(m)%x_low - xlower + eps*dx) / dx + 1), 1)
+            i2 = min(floor((regions(m)%x_hi - xlower - eps*dx)  / dx + 1), mx)
         endif
 
         if (ylower >= regions(m)%y_hi .or. yupper <= regions(m)%y_low) then
             cycle rloop  ! no intersection
         else
-            j1 = max(floor((regions(m)%y_low - ylower) / dy) + 1, 1)
-            j2 = min(floor((regions(m)%y_hi - ylower) / dy) + 1, my)
+            j1 = max(floor((regions(m)%y_low - ylower + eps*dy) / dy + 1), 1)
+            j2 = min(floor((regions(m)%y_hi - ylower - eps*dy)  / dy + 1), my)
         endif
 
         do j=j1,j2
@@ -137,15 +140,15 @@ subroutine flagregions2(mx,my,mbuff,xlower,ylower,dx,dy,level,t, &
         if (xlower >= rr%x2bb .or. xupper <= rr%x1bb) then
             cycle rrloop  ! no intersection
         else
-            i1 = max(floor((rr%x1bb - xlower) / dx) + 1, 1)
-            i2 = min(floor((rr%x2bb -xlower) / dx) + 1, mx)
+            i1 = max(floor((rr%x1bb - xlower + eps*dx) / dx) + 1, 1)
+            i2 = min(floor((rr%x2bb -xlower - eps*dx) / dx) + 1, mx)
         endif
 
         if (ylower >= rr%y2bb .or. yupper <= rr%y1bb) then
             cycle rrloop  ! no intersection
         else
-            j1 = max(floor((rr%y1bb - ylower) / dy) + 1, 1)
-            j2 = min(floor((rr%y2bb - ylower) / dy) + 1, my)
+            j1 = max(floor((rr%y1bb - ylower + eps*dy) / dy) + 1, 1)
+            j2 = min(floor((rr%y2bb - ylower - eps*dy) / dy) + 1, my)
         endif
 
         !write(58,*) 'ixy, ds: ',rr%ixy, rr%ds  ! +++
