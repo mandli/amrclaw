@@ -1,7 +1,7 @@
 c
 c --------------------------------------------------------------
 c
-      subroutine preicall(val,aux,nrow,ncol,nvar,naux,
+      subroutine preicall(val,aux,nrow,ncol,nvar,naux,t,
      1                    ilo,ihi,jlo,jhi,level,fliparray)
 c
       use amr_module
@@ -152,7 +152,7 @@ c             swap so that smaller one is left index, etc since mapping reflects
                   fliparray(locflipaux:locflipaux+naux*nc*nr - 1) =
      1                     NEEDS_TO_BE_SET
                  call setaux(ng,nr,nc,xlwrap,ybwrap,
-     1                    hxposs(level),hyposs(level),naux,
+     1                    hxposs(level),hyposs(level),t,naux,
      2                    fliparray(locflipaux))
               endif 
 

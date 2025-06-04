@@ -75,7 +75,7 @@ c         make coarsened enlarged patch for conservative fixup
              !iperim = nrow+ncol 
              !locflip = igetsp(iperim*nghost*(nvar+naux))
              call preicall(alloc(loctmp),alloc(loctx),nrow,ncol,nvar,
-     .                     naux,iclo,ichi,jclo,jchi,level-1,
+     .                     naux,time,iclo,ichi,jclo,jchi,level-1,
      .                     fliparray)
 !     .                     alloc(locflip))
 !             call reclam(locflip,iperim*nghost*(nvar+naux))
@@ -86,7 +86,8 @@ c         make coarsened enlarged patch for conservative fixup
 !         in case any part sticks out of domain still need to set remaining aux
 !         cells
           if (naux .gt. 0 .and. sticksout) then  
-             call setaux(ng,nrow,ncol,xl,yb,hxc,hyc,naux,alloc(loctx))
+             call setaux(ng,nrow,ncol,xl,yb,hxc,hyc,time,naux,
+     .                      alloc(loctx))
           endif
 !--          found = .false.
 !--          do i = 1, naux*nrow*ncol, naux

@@ -201,7 +201,7 @@ recursive subroutine prefilrecur(level,nvar,valbig,auxbig,naux,time,mitot,mjtot,
 
                 if (naux>0) then
                     scratchaux = NEEDS_TO_BE_SET  !flag all cells with signal since dimensioned strangely
-                    call setaux(ng,mi,mj,xlwrap,ybwrap,hxposs(level),hyposs(level),naux,scratchaux)
+                    call setaux(ng,mi,mj,xlwrap,ybwrap,hxposs(level),hyposs(level),time,naux,scratchaux)
                 endif 
 
                 rect = [iwrap1,iwrap2,j1+jbump,j2+jbump]
