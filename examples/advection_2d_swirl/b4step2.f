@@ -24,6 +24,9 @@ c        # setaux should be used for all time.
 c
        do 200 i=1-mbc,mx+mbc
           do 100 j=1-mbc,my+mbc
+C             if (aux(1,i,j) > 1d5) then
+C                   print *, i, j, aux(1, i, j)
+C             end if
 c           # coordinates of lower left corner of grid cell:
             xll = xlower + (i-1)*dx
             yll = ylower + (j-1)*dy

@@ -44,7 +44,7 @@ def setplot(plotdata=None):
     plotitem.plot_var = 0
     plotitem.pcolor_cmap = colormaps.yellow_red_blue
     plotitem.pcolor_cmin = 0.0
-    plotitem.pcolor_cmax = 1.0
+    plotitem.pcolor_cmax = 10.0
     plotitem.add_colorbar = True
     plotitem.amr_celledges_show = [True, True, False]
     plotitem.amr_patchedges_show = [True, True]
@@ -52,6 +52,7 @@ def setplot(plotdata=None):
     
     # Figure for contour plot
     plotfigure = plotdata.new_plotfigure(name='contour', figno=1)
+    plotfigure.show = False
 
     # Set up for axes in this figure:
     plotaxes = plotfigure.new_plotaxes()

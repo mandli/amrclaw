@@ -55,6 +55,7 @@ SOURCES = \
   setprob.f \
   b4step2.f \
   qinit.f \
+  qad.f \
   $(CLAW)/riemann/src/rpn2_vc_advection.f \
   $(CLAW)/riemann/src/rpt2_vc_advection.f \
 

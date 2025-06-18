@@ -66,8 +66,8 @@ def setrun(claw_pkg='amrclaw'):
     clawdata.upper[1] = 1.000000e+00          # yupper
 
     # Number of grid cells:
-    clawdata.num_cells[0] = 40      # mx
-    clawdata.num_cells[1] = 40      # my
+    clawdata.num_cells[0] = 15      # mx
+    clawdata.num_cells[1] = 15      # my
 
     # ---------------
     # Size of system:
@@ -106,7 +106,7 @@ def setrun(claw_pkg='amrclaw'):
     # Specify at what times the results should be written to fort.q files.
     # Note that the time integration stops after the final output time.
 
-    clawdata.output_style = 1
+    clawdata.output_style = 3
 
     if clawdata.output_style==1:
         # Output ntimes frames at equally spaced times up to tfinal:
@@ -123,7 +123,7 @@ def setrun(claw_pkg='amrclaw'):
     elif clawdata.output_style == 3:
         # Output every step_interval timesteps over total_steps timesteps:
         clawdata.output_step_interval = 1
-        clawdata.total_steps = 10
+        clawdata.total_steps = 25
         clawdata.output_t0 = True  # output at initial (or restart) time?
 
 
@@ -141,7 +141,7 @@ def setrun(claw_pkg='amrclaw'):
     # The current t, dt, and cfl will be printed every time step
     # at AMR levels <= verbosity.  Set verbosity = 0 for no printing.
     #   (E.g. verbosity == 2 means print only on levels 1 and 2.)
-    clawdata.verbosity = 0
+    clawdata.verbosity = 2
 
 
 
@@ -268,12 +268,12 @@ def setrun(claw_pkg='amrclaw'):
     amrdata = rundata.amrdata
 
     # max number of refinement levels:
-    amrdata.amr_levels_max = 3
+    amrdata.amr_levels_max = 2
 
     # List of refinement ratios at each level (length at least amr_level_max-1)
-    amrdata.refinement_ratios_x = [2, 4, 2]
-    amrdata.refinement_ratios_y = [2, 4, 2]
-    amrdata.refinement_ratios_t = [2, 4, 2]
+    amrdata.refinement_ratios_x = [2, 1]
+    amrdata.refinement_ratios_y = [2, 1]
+    amrdata.refinement_ratios_t = [2, 1]
 
 
     # Specify type of each aux variable in amrdata.auxtype.
@@ -294,7 +294,7 @@ def setrun(claw_pkg='amrclaw'):
     # each of its neighbors.
 
     # steps to take on each level L between regriddings of level L+1:
-    amrdata.regrid_interval = 2
+    amrdata.regrid_interval = 1
 
     # width of buffer zone around flagged points:
     # (typically the same as regrid_interval so waves don't escape):
@@ -305,7 +305,7 @@ def setrun(claw_pkg='amrclaw'):
     amrdata.clustering_cutoff = 0.700000
 
     # print info about each regridding up to this level:
-    amrdata.verbosity_regrid = 0
+    amrdata.verbosity_regrid = 2
 
 
     # ---------------
@@ -328,7 +328,6 @@ def setrun(claw_pkg='amrclaw'):
     amrdata.sprint = False      # space/memory output
     amrdata.tprint = False      # time step reporting each level
     amrdata.uprint = False      # update/upbnd reporting
-
 
     return rundata
 
