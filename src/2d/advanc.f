@@ -1,8 +1,8 @@
 c
 !> Integrate all grids at the input **level** by one step of its delta(t)
 !!
-!! this includes:  
-!! - setting the ghost cells 
+!! this includes:
+!! - setting the ghost cells
 !! - advancing the solution on the grid
 !! - adjusting fluxes for flux conservation step later
 c --------------------------------------------------------------
@@ -33,7 +33,7 @@ c     not being able to dimension at maxthreads
 c
 c  ::::::::::::::; ADVANC :::::::::::::::::::::::::::::::::::::::::::
 c  integrate all grids at the input  'level' by one step of its delta(t)
-c  this includes:  setting the ghost cells 
+c  this includes:  setting the ghost cells
 c                  advancing the solution on the grid
 c                  adjusting fluxes for flux conservation step later
 c :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -77,7 +77,7 @@ c We want to do this regardless of the threading type
          locnew = node(store1,mptr)
          locaux = node(storeaux,mptr)
          time   = rnode(timemult,mptr)
-c     
+c
           call bound(time,nvar,nghost,alloc(locnew),mitot,mjtot,mptr,
      1               alloc(locaux),naux)
 
@@ -87,7 +87,7 @@ c
       call cpu_time(cpu_finishBound)
       timeBound = timeBound + clock_finishBound - clock_startBound
       timeBoundCPU=timeBoundCPU+cpu_finishBound-cpu_startBound
-      
+
 c
 c save coarse level values if there is a finer level for wave fixup
       if (level+1 .le. mxnest) then
@@ -99,12 +99,12 @@ c
       dtlevnew = rinfinity
       cfl_level = 0.d0    !# to keep track of max cfl seen on each level
 
-c 
+c
       call system_clock(clock_startStepgrid,clock_rate)
       call cpu_time(cpu_startStepgrid)
 
 
-!$OMP PARALLEL DO PRIVATE(j,mptr,nx,ny,mitot,mjtot)  
+!$OMP PARALLEL DO PRIVATE(j,mptr,nx,ny,mitot,mjtot)
 !$OMP&            PRIVATE(mythread,dtnew)
 !$OMP&            SHARED(rvol,rvoll,level,nvar,mxnest,alloc,intrat)
 !$OMP&            SHARED(nghost,intratx,intraty,hx,hy,naux,listsp)
@@ -124,7 +124,7 @@ c
           call par_advanc(mptr,mitot,mjtot,nvar,naux,dtnew)
 !$OMP CRITICAL (newdt)
           dtlevnew = dmin1(dtlevnew,dtnew)
-!$OMP END CRITICAL (newdt)    
+!$OMP END CRITICAL (newdt)
 
       end do
 !$OMP END PARALLEL DO
@@ -134,8 +134,8 @@ c
       tvoll(level) = tvoll(level) + clock_finish - clock_start
       tvollCPU(level) = tvollCPU(level) + cpu_finish - cpu_start
       timeStepgrid = timeStepgrid +clock_finish-clock_startStepgrid
-      timeStepgridCPU=timeStepgridCPU+cpu_finish-cpu_startStepgrid      
-      
+      timeStepgridCPU=timeStepgridCPU+cpu_finish-cpu_startStepgrid
+
       cflmax = dmax1(cflmax, cfl_level)
 
 c
@@ -198,6 +198,7 @@ c
       nx    = node(ndihi,mptr) - node(ndilo,mptr) + 1
       ny    = node(ndjhi,mptr) - node(ndjlo,mptr) + 1
       time  = rnode(timemult,mptr)
+      dt    = possk(level)
 
 !$    mythread = omp_get_thread_num()
 
@@ -212,7 +213,6 @@ c  of old and new time solution values.
 c
          if (level .lt. mxnest) then
              ntot   = mitot * mjtot * nvar
-cdir$ ivdep
              do  i = 1, ntot
                alloc(locold + i - 1) = alloc(locnew + i - 1)
              end do
@@ -226,9 +226,12 @@ c
       rvoll(level) = rvoll(level) + nx * ny
 !$OMP END CRITICAL(rv)
 
-
+c        Call b4step2 here so that time dependent arrays can be filled properly
          locaux = node(storeaux,mptr)
-c
+         call b4step2(nghost, nx, ny, nvar, alloc(locnew),
+     &                rnode(cornxlo,mptr), rnode(cornylo,mptr), hx, hy,
+     &                time, dt, naux, alloc(locaux))
+
          if (node(ffluxptr,mptr) .ne. 0) then
             lenbc  = 2*(nx/intratx(level-1)+ny/intraty(level-1))
             locsvf = node(ffluxptr,mptr)
@@ -267,7 +270,7 @@ c           # Godunov splitting
      2               mitot,mjtot,nghost,
      3               delt,dtnew,hx,hy,nvar,
      4               xlow,ylow,time,mptr,naux,alloc(locaux))
-         else 
+         else
 c           # should never get here due to check in amr2
             write(6,*) '*** Strang splitting not supported'
             stop
